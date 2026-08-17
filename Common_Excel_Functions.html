@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Excel Functions Cheat Sheet</title>
+<link rel="stylesheet" href="https://du11hjcvx0uqb.cloudfront.net/dist/brandable_css/no_variables/bundles/fonts-6ee09b0b2f.css" media="screen" />
+<link rel="stylesheet" href="https://du11hjcvx0uqb.cloudfront.net/dist/brandable_css/default/variables-high_contrast-7dd4b80918af0e0218ec0229e4bd5873.css" media="all" />
+<link rel="stylesheet" href="https://du11hjcvx0uqb.cloudfront.net/dist/brandable_css/new_styles_high_contrast/bundles/common-a1686a70b5.css" media="all" />
+<link rel="stylesheet" href="https://du11hjcvx0uqb.cloudfront.net/dist/brandable_css/new_styles_high_contrast/bundles/wiki_page-bb0c0c1f96.css" media="screen" />
+<style>
+.accordion{background-color:#eee;color:#0d0d0d;cursor:pointer;padding:8px 8px 8px 24px;width:100%;text-align:left;border:none;outline:outset;transition:.4s;position:relative;margin-top:6px}
+.active,.accordion:hover{background-color:#ccc}
+.accordion::before{content:'\25BC';font-size:12px;position:absolute;left:7px;top:50%;transform:translateY(-50%);transition:transform .4s}
+.accordion.active::before{transform:translateY(-50%) rotate(180deg)}
+.panel{padding:0 10px 10px 10px;display:none;background-color:white;overflow:hidden}
+table{border-collapse:collapse;width:100%;margin:10px 0}
+th,td{border:1px solid #d9d9d9;text-align:left;padding:7px;vertical-align:top}
+th{background-color:#f4f3f3}
+code{background-color:#f4f3f3;padding:2px 4px;border-radius:3px}
+.tip{border-left:4px solid #0078ad;padding:8px 12px;margin:10px 0;background-color:#f7fbfd}
+.in-subtitle{border-bottom:4px solid #0078ad;padding-bottom:2px;margin-top:14px}
+</style>
+</head>
+<body>
+
+<h2>Excel for Business Managers: Formula &amp; Function Cheat Sheet</h2>
+<p>This reference focuses on the Excel functions and tools used in this course. Use it to remember what each function does, how the formula is written, and when it is most useful.</p>
+
+<button class="accordion"><h4><strong>1. Essential Calculations</strong></h4></button>
+<div class="panel">
+<table>
+<tr><th>Function</th><th>Example</th><th>What It Does</th><th>Best Used For</th></tr>
+<tr><td><strong>SUM</strong></td><td><code>=SUM(B2:B10)</code></td><td>Adds all numbers in the selected range.</td><td>Total sales, expenses, units, hours, or revenue.</td></tr>
+<tr><td><strong>AVERAGE</strong></td><td><code>=AVERAGE(B2:B10)</code></td><td>Calculates the arithmetic mean.</td><td>Average sales, salary, rating, cost, or performance.</td></tr>
+<tr><td><strong>MIN</strong></td><td><code>=MIN(B2:B10)</code></td><td>Returns the smallest value.</td><td>Lowest cost, sales, time, or score.</td></tr>
+<tr><td><strong>MAX</strong></td><td><code>=MAX(B2:B10)</code></td><td>Returns the largest value.</td><td>Highest sales, salary, profit, or score.</td></tr>
+<tr><td><strong>COUNT</strong></td><td><code>=COUNT(B2:B10)</code></td><td>Counts cells containing numbers.</td><td>Counting numeric observations.</td></tr>
+<tr><td><strong>COUNTA</strong></td><td><code>=COUNTA(A2:A10)</code></td><td>Counts nonblank cells.</td><td>Counting employees, products, customers, or records.</td></tr>
+</table>
+</div>
+
+<button class="accordion"><h4><strong>2. Cell References: Relative, Absolute, and Mixed</strong></h4></button>
+<div class="panel">
+<p>Cell references determine what happens when you copy a formula.</p>
+<table>
+<tr><th>Type</th><th>Example</th><th>What Happens When Copied?</th></tr>
+<tr><td><strong>Relative</strong></td><td><code>=B2*C2</code></td><td>Both references change.</td></tr>
+<tr><td><strong>Absolute</strong></td><td><code>=B2*$F$1</code></td><td>F1 stays fixed.</td></tr>
+<tr><td><strong>Mixed</strong></td><td><code>=$B2*C$1</code></td><td>Either the row or the column remains fixed.</td></tr>
+</table>
+<div class="tip"><strong>Example:</strong> If F1 contains an 8.25% tax rate, use <code>=B2*$F$1</code> so every copied formula continues to use the same tax-rate cell.</div>
+</div>
+
+<button class="accordion"><h4><strong>3. Logical Functions</strong></h4></button>
+<div class="panel">
+<h4 class="in-subtitle">IF</h4>
+<p><code>=IF(C2&gt;=100000,"Target Met","Below Target")</code></p>
+<p><strong>Best for:</strong> Classifying performance, identifying bonus eligibility, flagging values above or below a threshold, and creating business categories.</p>
+
+<h4 class="in-subtitle">AND</h4>
+<p><code>=AND(B2&gt;=100000,C2&gt;=0.20)</code></p>
+<p>Returns TRUE only when <strong>all</strong> conditions are true.</p>
+
+<h4 class="in-subtitle">OR</h4>
+<p><code>=OR(B2="Texas",B2="Louisiana")</code></p>
+<p>Returns TRUE when <strong>at least one</strong> condition is true.</p>
+
+<h4 class="in-subtitle">IF + AND</h4>
+<p><code>=IF(AND(B2&gt;=100000,C2&gt;=0.20),"Bonus","No Bonus")</code></p>
+<p><strong>Best for:</strong> Business rules that require several conditions to be satisfied at the same time.</p>
+</div>
+
+<button class="accordion"><h4><strong>4. Conditional Calculations</strong></h4></button>
+<div class="panel">
+<table>
+<tr><th>Function</th><th>Example</th><th>Best Used For</th></tr>
+<tr><td><strong>SUMIF</strong></td><td><code>=SUMIF(A2:A100,"Houston",B2:B100)</code></td><td>Total sales by region, expenses by department, revenue by product.</td></tr>
+<tr><td><strong>COUNTIF</strong></td><td><code>=COUNTIF(C2:C100,"Yes")</code></td><td>Counting employees who completed training, late orders, or customers in a category.</td></tr>
+<tr><td><strong>AVERAGEIF</strong></td><td><code>=AVERAGEIF(A2:A100,"Sales",B2:B100)</code></td><td>Average salary by department, sales by region, or ratings by group.</td></tr>
+</table>
+</div>
+
+<button class="accordion"><h4><strong>5. Lookup Functions</strong></h4></button>
+<div class="panel">
+<h4 class="in-subtitle">VLOOKUP</h4>
+<p><code>=VLOOKUP(A2,$F$2:$H$100,3,FALSE)</code></p>
+<p>Searches for the value in A2 in the first column of the lookup table and returns a corresponding value from another column.</p>
+<p><strong>Best for:</strong> Finding product prices, employee departments, customer information, or other values associated with an ID.</p>
+<div class="tip"><strong>Tip:</strong> Use <code>FALSE</code> when you need an exact match.</div>
+
+<h4 class="in-subtitle">HLOOKUP</h4>
+<p><code>=HLOOKUP(B1,$B$10:$G$12,3,FALSE)</code></p>
+<p>Works like VLOOKUP, but searches horizontally across a row.</p>
+</div>
+
+<button class="accordion"><h4><strong>6. Error Handling</strong></h4></button>
+<div class="panel">
+<h4 class="in-subtitle">IFERROR</h4>
+<p><code>=IFERROR(VLOOKUP(A2,$F$2:$H$100,3,FALSE),"Not Found")</code></p>
+<p>Replaces an Excel error with a message or value you choose.</p>
+<p><strong>Best for:</strong> Cleaning up lookup results and handling missing data.</p>
+</div>
+
+<button class="accordion"><h4><strong>7. Useful Text Functions</strong></h4></button>
+<div class="panel">
+<table>
+<tr><th>Function</th><th>Example</th><th>What It Does</th></tr>
+<tr><td><strong>CONCAT</strong></td><td><code>=CONCAT(A2," ",B2)</code></td><td>Combines text, such as first and last names.</td></tr>
+<tr><td><strong>LEFT</strong></td><td><code>=LEFT(A2,3)</code></td><td>Returns the first three characters.</td></tr>
+<tr><td><strong>RIGHT</strong></td><td><code>=RIGHT(A2,4)</code></td><td>Returns the last four characters.</td></tr>
+<tr><td><strong>LEN</strong></td><td><code>=LEN(A2)</code></td><td>Counts the number of characters in a cell.</td></tr>
+<tr><td><strong>TRIM</strong></td><td><code>=TRIM(A2)</code></td><td>Removes unnecessary spaces from text.</td></tr>
+</table>
+</div>
+
+<button class="accordion"><h4><strong>8. Rounding Functions</strong></h4></button>
+<div class="panel">
+<table>
+<tr><th>Function</th><th>Example</th><th>Best Used For</th></tr>
+<tr><td><strong>ROUND</strong></td><td><code>=ROUND(B2,2)</code></td><td>Rounding currency, percentages, or calculated values.</td></tr>
+<tr><td><strong>ROUNDUP</strong></td><td><code>=ROUNDUP(B2,0)</code></td><td>Always rounding upward.</td></tr>
+<tr><td><strong>ROUNDDOWN</strong></td><td><code>=ROUNDDOWN(B2,0)</code></td><td>Always rounding downward.</td></tr>
+</table>
+</div>
+
+<button class="accordion"><h4><strong>9. Common Excel Errors</strong></h4></button>
+<div class="panel">
+<table>
+<tr><th>Error</th><th>Usually Means</th></tr>
+<tr><td><code>#####</code></td><td>The column is too narrow to display the value.</td></tr>
+<tr><td><code>#DIV/0!</code></td><td>The formula is attempting to divide by zero.</td></tr>
+<tr><td><code>#N/A</code></td><td>Excel cannot find the requested value.</td></tr>
+<tr><td><code>#NAME?</code></td><td>Excel does not recognize something in the formula.</td></tr>
+<tr><td><code>#REF!</code></td><td>The formula contains an invalid cell reference.</td></tr>
+<tr><td><code>#VALUE!</code></td><td>The formula is using the wrong type of data.</td></tr>
+</table>
+</div>
+
+<button class="accordion"><h4><strong>10. Formula Troubleshooting Checklist</strong></h4></button>
+<div class="panel">
+<ol>
+<li>Does the formula begin with <code>=</code>?</li>
+<li>Are all parentheses opened and closed correctly?</li>
+<li>Are text criteria inside quotation marks?</li>
+<li>Are the correct cells or ranges selected?</li>
+<li>Should any references contain <code>$</code> signs?</li>
+<li>Are numbers stored as numbers rather than text?</li>
+<li>For VLOOKUP, is the lookup value in the first column of the lookup range?</li>
+<li>If you need an exact VLOOKUP match, did you use <code>FALSE</code>?</li>
+<li>What error message is Excel displaying?</li>
+</ol>
+</div>
+
+<button class="accordion"><h4><strong>11. Which Function or Tool Should I Use?</strong></h4></button>
+<div class="panel">
+<table>
+<tr><th>If You Need To...</th><th>Use...</th></tr>
+<tr><td>Add numbers</td><td><strong>SUM</strong></td></tr>
+<tr><td>Calculate an average</td><td><strong>AVERAGE</strong></td></tr>
+<tr><td>Find the highest or lowest value</td><td><strong>MAX</strong> or <strong>MIN</strong></td></tr>
+<tr><td>Make a decision based on a condition</td><td><strong>IF</strong></td></tr>
+<tr><td>Require several conditions to be true</td><td><strong>IF + AND</strong></td></tr>
+<tr><td>Allow any one of several conditions to qualify</td><td><strong>IF + OR</strong></td></tr>
+<tr><td>Add values only when they meet a condition</td><td><strong>SUMIF</strong></td></tr>
+<tr><td>Count records meeting a condition</td><td><strong>COUNTIF</strong></td></tr>
+<tr><td>Calculate an average for one group</td><td><strong>AVERAGEIF</strong></td></tr>
+<tr><td>Find information associated with an ID or other value</td><td><strong>VLOOKUP</strong> or <strong>HLOOKUP</strong></td></tr>
+<tr><td>Replace an error message with something clearer</td><td><strong>IFERROR</strong></td></tr>
+<tr><td>Summarize and compare a large dataset</td><td><strong>PivotTable</strong></td></tr>
+<tr><td>Determine the input needed to reach a specific result</td><td><strong>Goal Seek</strong></td></tr>
+<tr><td>Find the best solution while considering constraints</td><td><strong>Solver</strong></td></tr>
+</table>
+</div>
+
+<script>
+var acc = document.getElementsByClassName("accordion");
+for (var i = 0; i < acc.length; i++) {
+  acc[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var panel = this.nextElementSibling;
+    panel.style.display = panel.style.display === "block" ? "none" : "block";
+  });
+}
+</script>
+</body>
+</html>
