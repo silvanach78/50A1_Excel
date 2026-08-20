@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Excel Essential Functions | Excel for Business Managers</title>
+
+<style>
+:root {
+  --bg: #f7f8fa;
+  --panel: #ffffff;
+  --ink: #222831;
+  --muted: #5c6773;
+  --line: #d7dde5;
+  --accent: #1f6f4a;
+  --accent-soft: #e9f5ef;
+  --accent-mid: #bfe3d2;
+  --note-bg: #fff7e8;
+  --note-line: #e6cf95;
+  --example-bg: #f3f8fb;
+  --example-line: #4f89a6;
+  --code-bg: #202522;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+  line-height: 1.65;
+}
+
+a { color: #0b5ea8; }
+
+/* ----------------------
+   PAGE LAYOUT
+------------------- */
+.layout {
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr);
+  gap: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 6px;
+}
+
+/* ----------------------
+   STICKY LEFT NAVIGATION
+------------------- */
+.sidebar {
+  position: sticky;
+  top: 6px;
+  align-self: start;
+  max-height: calc(100vh - 12px);
+  overflow-y: auto;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 18px 18px 16px;
+  box-shadow: 0 6px 20px rgba(34,40,49,.06);
+}
+
+.sidebar h2 {
+  margin: 0 0 6px;
+  font-size: 1.45rem;
+  color: var(--accent);
+}
+
+.sidebar p {
+  margin: 0 0 14px;
+  color: var(--muted);
+  font-size: .92rem;
+}
+
+.toc-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.toc-list li {
+  margin: 3px 0;
+}
+
+.toc-list a {
+  display: block;
+  text-decoration: none;
+  color: #334155;
+  padding: 6px 8px;
+  border-radius: 8px;
+  font-size: .94rem;
+  line-height: 1.35;
+  transition: background .15s ease, color .15s ease;
+}
+
+.toc-list a:hover,
+.toc-list a.active {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.toc-list a.active {
+  font-weight: 700;
+}
+
+/* ----------------------
+   MAIN CONTENT
+------------------- */
+.content {
+  min-width: 0;
+}
+
+.frontmatter,
+.module,
+.closing-section {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 24px 26px;
+  box-shadow: 0 6px 18px rgba(34,40,49,.05);
+  margin-bottom: 16px;
+}
+
+.frontmatter {
+  border-top: 7px solid var(--accent);
+}
+
+.frontmatter .course-label {
+  text-transform: uppercase;
+  font-size: .9rem;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  color: var(--accent);
+  margin-bottom: 5px;
+}
+
+.frontmatter h1 {
+  margin: 0;
+  font-size: 2rem;
+  line-height: 1.15;
+}
+
+.subtitle {
+  margin: 9px 0 0;
+  color: var(--muted);
+  font-size: 1.06rem;
+}
+
+h2, h3, h4 {
+  scroll-margin-top: 24px;
+}
+
+.module > h2 {
+  margin: 0 0 14px;
+  font-size: 1.55rem;
+  color: var(--accent);
+  line-height: 1.25;
+  border-bottom: 2px solid var(--accent-soft);
+  padding-bottom: 8px;
+}
+
+h3 {
+  margin: 28px 0 10px;
+  font-size: 1.28rem;
+  color: #244f3b;
+}
+
+h4 {
+  margin: 22px 0 8px;
+  font-size: 1.06rem;
+}
+
+p {
+  margin: 0 0 14px;
+}
+
+ul, ol {
+  margin-top: 8px;
+  margin-bottom: 16px;
+}
+
+li { margin-bottom: 7px; }
+
+/* ----------------------
+   INFORMATION BOXES
+------------------- */
+.insight,
+.example-box,
+.note,
+.remember-box {
+  padding: 13px 15px;
+  border-radius: 8px;
+  margin: 16px 0;
+}
+
+.insight {
+  background: var(--accent-soft);
+  border-right: 4px solid var(--accent);
+}
+
+.example-box {
+  background: var(--example-bg);
+  border-left: 4px solid var(--example-line);
+}
+
+.note {
+  background: var(--note-bg);
+  border-left: 4px solid var(--note-line);
+}
+
+.remember-box {
+  background: var(--accent-soft);
+  border-left: 4px solid var(--accent);
+}
+
+.box-title {
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+/* ----------------------
+   TABLES - EXCEL STYLE
+------------------- */
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0 16px;
+  font-size: .96rem;
+  background: #ffffff;
+  border: 1px solid #b7c9be;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+/* Header row */
+th {
+  text-align: left;
+  font-weight: 700;
+  padding: 11px 12px;
+  color: #ffffff;
+  background: #217346; /* Excel green */
+  border: 1px solid #185c37;
+}
+
+/* Regular cells */
+td {
+  padding: 11px 12px;
+  vertical-align: top;
+  border: 1px solid #d5ded9;
+  color: #222222;
+  background: #ffffff;
+}
+
+/* Alternating Excel-style banded rows */
+tbody tr:nth-child(even) td {
+  background: #ededed;
+}
+
+/* Optional hover effect */
+tbody tr:hover td {
+  background: #dceee3;
+}
+
+/* Keep formulas and inline code readable inside tables */
+td .formula,
+th .formula {
+  white-space: nowrap;
+}
+
+/* Slightly emphasize first column when useful */
+tbody td:first-child {
+  font-weight: 500;
+}
+
+/* Responsive tables */
+@media (max-width: 700px) {
+  table {
+    font-size: .9rem;
+  }
+
+  th,
+  td {
+    padding: 9px 8px;
+  }
+}
+/* ----------------------
+   FORMULAS & KEYS
+------------------- */
+.formula {
+  display: inline-block;
+  background: #f1f3f2;
+  border: 1px solid #d4d8d6;
+  border-radius: 5px;
+  padding: 3px 7px;
+  font-family: Consolas, "Courier New", monospace;
+  font-weight: 700;
+  color: #173d2b;
+}
+
+.formula-block {
+  background: var(--code-bg);
+  color: #fff;
+  font-family: Consolas, "Courier New", monospace;
+  padding: 14px 17px;
+  border-radius: 8px;
+  margin: 15px 0;
+  overflow-x: auto;
+}
+
+kbd {
+  display: inline-block;
+  padding: 2px 7px;
+  font-size: .9em;
+  background: #f1f1f1;
+  border: 1px solid #c8c8c8;
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* ----------------------
+   NUMBERED STEPS
+------------------- */
+.steps {
+  counter-reset: step;
+  list-style: none;
+  padding-left: 0;
+}
+
+.steps li {
+  position: relative;
+  margin: 15px 0;
+  padding-left: 46px;
+  min-height: 32px;
+}
+
+.steps li::before {
+  counter-increment: step;
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 30px;
+  height: 30px;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 30px;
+  font-weight: 700;
+}
+
+/* ----------------------
+   FIGURES
+------------------- */
+figure {
+  margin: 22px 0 18px;
+  text-align: center;
+}
+
+figure img {
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #fff;
+}
+
+/* Optional figure sizes */
+figure img.small {
+  max-width: 400px;
+}
+
+figure img.medium {
+  max-width: 650px;
+}
+
+figure img.large {
+  max-width: 900px;
+}
+
+figcaption {
+  margin-top: 9px;
+  font-size: .94rem;
+  color: #44515f;
+  font-style: italic;
+}
+.video-figure video.small {
+  width: 100%;
+  max-width: 400px;
+}
+
+.video-figure video.medium {
+  width: 100%;
+  max-width: 650px;
+}
+
+.video-figure video.large {
+  width: 100%;
+  max-width: 900px;
+}
+/* ----------------------
+   LEARNING CHECKLIST
+------------------- */
+.checklist {
+  background: #fafafa;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 18px 20px;
+}
+
+/* ----------------------
+   RESPONSIVE LAYOUT
+------------------- */
+@media (max-width: 1000px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    position: static;
+    max-height: none;
+  }
+
+  .toc-list {
+    columns: 2;
+    column-gap: 20px;
+  }
+
+  .toc-list li {
+    break-inside: avoid;
+  }
+}
+
+@media (max-width: 650px) {
+  .frontmatter,
+  .module,
+  .closing-section {
+    padding: 20px 18px;
+  }
+
+  .toc-list {
+    columns: 1;
+  }
+
+  .frontmatter h1 {
+    font-size: 1.65rem;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="layout">
+
+  <aside class="sidebar" aria-label="Table of contents">
+    <h2>Contents</h2>
+    <p>Select a topic to jump directly to that section.</p>
+
+    <ul class="toc-list">
+      <li><a href="#about">About This Reading</a></li>
+      <li><a href="#topic1">1. Renaming Worksheets</a></li>
+      <li><a href="#topic2">2. SUM()</a></li>
+      <li><a href="#topic3">3. MIN()</a></li>
+      <li><a href="#topic4">4. MAX()</a></li>
+      <li><a href="#topic5">5. AVERAGE()</a></li>
+      <li><a href="#topic6">6. COUNT()</a></li>
+      <li><a href="#topic7">7. AutoSum</a></li>
+      <li><a href="#topic8">8. Moving and Copying Data</a></li>
+      <li><a href="#topic9">9. Deleting Rows and Columns</a></li>
+      <li><a href="#bonus">Bonus: Conditional Formatting</a></li>
+      <li><a href="#learning-check">What You Should Be Able to Do</a></li>
+    </ul>
+  </aside>
+
+  <main class="content">
+
+    <section class="frontmatter" id="about">
+      <div class="course-label">Excel for Business Managers</div>
+      <h1>Excel Essential Functions</h1>
+      <p class="subtitle">
+        Worksheet organization, summary functions, AutoSum, moving and copying data,
+        and an introduction to conditional formatting.
+      </p>
+
+      <div class="insight" style="margin-top:20px;">
+        <strong>How to use this reading:</strong>
+        Use the navigation menu to move directly to any topic you want to review.
+        The sections are organized in the same sequence as the Week 2 skills and functions.
+      </div>
+
+      <p>
+        Week 2 builds on the Excel fundamentals introduced in Week 1. This week,
+        you will work with additional summary functions, apply formulas to a larger
+        dataset, manage worksheets more effectively, and begin using formatting tools
+        that make important information easier to identify.
+      </p>
+    </section>
+
+
+    <!-- ================================================= -->
+    <section id="topic1" class="module">
+      <h2>1. Renaming Worksheets</h2>
+
+      <p>
+        Recall that an Excel file is a <strong>workbook</strong>, and a workbook
+        can contain multiple <strong>worksheets</strong>. By default, Excel may
+        label worksheets with names such as Sheet1, Sheet2, and Sheet3.
+      </p>
+
+      <p>
+        Renaming worksheets makes a workbook easier to understand and navigate,
+        especially when each sheet represents a different period, department,
+        product, or type of analysis.
+      </p>
+
+      <h3>Rename a Worksheet</h3>
+      <ol class="steps">
+        <li>Locate the worksheet tab at the bottom of the workbook.</li>
+        <li>Right-click the worksheet tab.</li>
+        <li>Select <strong>Rename</strong>.</li>
+        <li>Type the new worksheet name.</li>
+        <li>Press <kbd>Enter</kbd>.</li>
+      </ol>
+
+      <div class="example-box">
+        <div class="box-title">Example</div>
+        A worksheet could be renamed <strong>May 2024</strong>, while another
+        worksheet could be renamed <strong>June 2024</strong>.
+      </div>
+
+      <h3>Creating Additional Worksheets</h3>
+      <p>
+        You can also that a workbook can contain multiple sheets.
+        Additional sheets can be created and then renamed to reflect the information
+        stored in each worksheet.
+      </p>
+    </section>
+
+
+    <!-- ================================================= -->
+    <section id="topic2" class="module">
+      <h2>2. SUM()</h2>
+
+      <p>
+        The <strong>SUM</strong> function adds numerical values in a selected range.
+        This function was introduced in Week 1 and is reviewed again in Week 2 using
+        a larger dataset.
+      </p>
+
+      <h3>Example Dataset</h3>
+
+      <p>
+        We will work with a dataset containing approximately 40 employees and
+        monthly car sales measured in dollars.
+      </p>
+
+      <h4>Creating Employee IDs with AutoFill</h4>
+
+      <p>
+        Employee IDs are entered in sequence and then extended using the fill handle.
+        This is another example of <strong>AutoFill</strong>.
+      </p>
+
+      <div class="example-box">
+        <div class="box-title">Example Pattern</div>
+        <span class="formula">0001</span>,
+        <span class="formula">0002</span>,
+        <span class="formula">0003</span> ...
+      </div>
+
+      <h4>Generating Sample Data with RANDBETWEEN()</h4>
+
+      <p>
+        To quickly create sample car-sales data, this reading uses Excel's
+        <strong>RANDBETWEEN</strong> function.
+      </p>
+
+      <div class="formula-block">=RANDBETWEEN(0,500000)</div>
+
+      <p>
+        In this example, Excel generates a random whole number between
+        0 and 500,000.
+      </p>
+
+      <ul>
+        <li>The first argument is the <strong>bottom</strong>, or minimum possible value.</li>
+        <li>The second argument is the <strong>top</strong>, or maximum possible value.</li>
+      </ul>
+
+      <div class="remember-box">
+        <div class="box-title">Random Values Recalculate</div>
+         random values may change whenever the worksheet
+        recalculates or is edited. Therefore, your generated values may not match
+        the values shown in the worksheet.
+      </div>
+
+      <h4>RAND() vs. RANDBETWEEN()</h4>
+
+      <p>
+        Excel also includes <strong>RAND()</strong>.
+        RAND generates a random decimal value between 0 and 1, while
+        RANDBETWEEN allows you to specify a lower and upper bound.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Function</th>
+            <th>Purpose</th>
+            <th>Example</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>RAND()</td>
+            <td>Generates a random decimal value between 0 and 1.</td>
+            <td><span class="formula">=RAND()</span></td>
+          </tr>
+          <tr>
+            <td>RANDBETWEEN()</td>
+            <td>Generates a random whole number between specified limits.</td>
+            <td><span class="formula">=RANDBETWEEN(0,500000)</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h4>Formatting Sales as Currency</h4>
+
+      <p>
+        After the sample values are generated, this reading formats the sales values
+        as dollars so they are easier to interpret.
+      </p>
+
+      <h3>SUM Syntax</h3>
+
+      <div class="formula-block">=SUM(B2:B41)</div>
+
+      <p>
+        The exact cell range depends on where your data is located. The function adds
+        all numerical values in the selected range.
+      </p>
+
+      <ol class="steps">
+        <li>Select the cell where the total should appear.</li>
+        <li>Type <span class="formula">=SUM(</span>.</li>
+        <li>Select the full range of sales values.</li>
+        <li>Type the closing parenthesis <span class="formula">)</span>.</li>
+        <li>Press <kbd>Enter</kbd>.</li>
+      </ol>
+    </section>
+
+
+    <!-- ================================================= -->
+    <section id="topic3" class="module">
+      <h2>3. MIN()</h2>
+
+      <p>
+        The <strong>MIN</strong> function returns the smallest numerical value
+        in a selected range.
+      </p>
+
+      <div class="formula-block">=MIN(B2:B41)</div>
+
+      <p>
+        MIN identifies the lowest monthly car-sales amount in the dataset.
+      </p>
+
+      <ol class="steps">
+        <li>Select the cell where the minimum should appear.</li>
+        <li>Type <span class="formula">=MIN(</span>.</li>
+        <li>Select the range of numerical values.</li>
+        <li>Close the parenthesis.</li>
+        <li>Press <kbd>Enter</kbd>.</li>
+      </ol>
+    </section>
+
+
+    <!-- ================================================= -->
+    <section id="topic4" class="module">
+      <h2>4. MAX()</h2>
+
+      <p>
+        The <strong>MAX</strong> function returns the largest numerical value
+        in a selected range.
+      </p>
+
+      <div class="formula-block">=MAX(B2:B41)</div>
+
+      <p>
+        MAX identifies the highest monthly car-sales amount in the dataset.
+      </p>
+    </section>
+
+
+    <!-- ================================================= -->
+    <section id="topic5" class="module">
+      <h2>5. AVERAGE()</h2>
+
+      <p>
+        The <strong>AVERAGE</strong> function calculates the arithmetic mean
+        of a group of numerical values.
+      </p>
+
+      <div class="formula-block">=AVERAGE(B2:B41)</div>
+
+      <p>
+        AVERAGE calculates the average monthly car-sales amount for the dataset.
+      </p>
+
+      <div class="remember-box">
+        <div class="box-title">Interpret the Result</div>
+        The average summarizes the center of the dataset, but it does not tell you
+        which employee achieved that exact value.
+      </div>
+    </section>
+
+
+    <!-- ================================================= -->
+    <section id="topic6" class="module">
+      <h2>6. COUNT()</h2>
+
+      <p>
+        The <strong>COUNT</strong> function counts the number of cells in a range
+        that contain numerical values.
+      </p>
+
+      <div class="formula-block">=COUNT(B2:B41)</div>
+
+      <p>
+        In this example, COUNT is used on the car-sales values and returns
+        the number of numerical observations in the selected range.
+      </p>
+
+      <div class="note">
+        <div class="box-title">What COUNT Counts</div>
+        COUNT counts cells containing numbers. In this reading's sales dataset,
+        that result corresponds to the number of employee sales observations.
+      </div>
+    </section>
+
+
+    <!-- ================================================= -->
+    <section id="topic7" class="module">
+      <h2>7. AutoSum</h2>
+
+      <p>
+        <strong>AutoSum</strong> provides a quick way to insert a SUM formula
+        without typing the function manually.
+      </p>
+
+      <p>
+         AutoSum is accessed from the <strong>Home</strong> tab
+        using the summation symbol <strong>Σ</strong>.
+      </p>
+
+      <ol class="steps">
+        <li>Select the cell where the total should appear.</li>
+        <li>Go to the <strong>Home</strong> tab.</li>
+        <li>Select the <strong>AutoSum (Σ)</strong> command.</li>
+        <li>Excel proposes a range of nearby numerical cells.</li>
+        <li>Verify that the selected range is correct.</li>
+        <li>Press <kbd>Enter</kbd> to accept the formula.</li>
+      </ol>
+
+      <div class="insight">
+        <strong>Excel recognizes nearby data:</strong>
+        In this example, AutoSum automatically identifies the sales values
+        directly above the total cell and proposes them as the range to sum.
+      </div>
+
+      <h3>AutoSum and SUM Produce the Same Calculation</h3>
+
+      <p>
+        AutoSum is simply a faster way to create a SUM formula. The resulting formula
+        can produce the same total as typing SUM manually.
+      </p>
+    </section>
+
+
+    <!-- ================================================= -->
+    <section id="topic8" class="module">
+      <h2>8. Moving and Copying Data</h2>
+
+      <p>
+        Excel allows you to copy or reposition cells, formulas, labels, and ranges
+        within a worksheet.
+      </p>
+
+      <h3>Copying Data</h3>
+
+      <p>
+         standard copy-and-paste commands work in Excel in much
+        the same way they work in other applications.
+      </p>
+
+      <h3>Moving a Selected Range</h3>
+
+      <p>
+        You can also selecting a block containing labels and calculated
+        formulas and dragging the entire selection to another location in the worksheet.
+      </p>
+
+      <div class="remember-box">
+        <div class="box-title">Watch for Narrow Columns</div>
+        If you move a numerical value into a column that is too narrow to display it,
+        Excel may show a series of hash symbols such as <strong>#####</strong>.
+        This does not mean the value is wrong. The column
+        simply needs to be widened.
+      </div>
+
+      <h3>AutoFit After Moving Data</h3>
+
+      <p>
+        To correct a column that is too narrow, move to the right edge of the column
+        heading and double-click the boundary. Excel will AutoFit the column to its contents.
+      </p>
+    </section>
+
+
+    <!-- ================================================= -->
+    <section id="topic9" class="module">
+      <h2>9. Deleting Rows and Columns</h2>
+
+      <p>
+        Deleting rows and columns is included among the Week 2 worksheet-management
+        skills. Detailed steps are not included in this reading because this topic
+        is not developed further in the Week 2 material.
+      </p>
+    </section>
+
+
+    <!-- ================================================= -->
+    <section id="bonus" class="module">
+      <h2>Bonus: Conditional Formatting</h2>
+
+      <p>
+        <strong>Conditional Formatting</strong> allows Excel to change the appearance
+        of cells when specified conditions are met.
+      </p>
+
+      <p>
+         conditional formatting is introduced as a preview of work
+        that will be developed further in the following week.
+      </p>
+
+      <h3>Why Use Conditional Formatting?</h3>
+
+      <p>
+        A long list of numerical values can be difficult to interpret quickly.
+        Conditional formatting can make important values stand out so that decision
+        makers can identify patterns or exceptions more efficiently.
+      </p>
+
+      <div class="example-box">
+        <div class="box-title">Example</div>
+        Suppose the car-sales dataset contains 40 employees. Conditional formatting
+        can make the <strong>top 10%</strong> of performers appear in green and the
+        <strong>bottom 10%</strong> appear in red.
+      </div>
+
+      <h3>Preprogrammed Conditional Formatting Rules</h3>
+
+      <p>
+        Excel includes several types of built-in rules available from the
+        <strong>Home &gt; Conditional Formatting</strong> menu:
+      </p>
+
+      <ul>
+        <li>Greater Than</li>
+        <li>Less Than</li>
+        <li>Between</li>
+        <li>Equal To</li>
+        <li>Top/Bottom Rules</li>
+        <li>Top 10 Items</li>
+        <li>Top 10%</li>
+        <li>Bottom 10%</li>
+        <li>Above Average</li>
+        <li>Below Average</li>
+        <li>Color Scales</li>
+      </ul>
+
+      <h3>Highlighting the Top 10%</h3>
+
+      <ol class="steps">
+        <li>Select the car-sales values.</li>
+        <li>Go to <strong>Home &gt; Conditional Formatting</strong>.</li>
+        <li>Select <strong>Top/Bottom Rules</strong>.</li>
+        <li>Select <strong>Top 10%</strong>.</li>
+        <li>Choose a green fill with dark green text.</li>
+        <li>Apply the rule.</li>
+      </ol>
+
+      <h3>Highlighting the Bottom 10%</h3>
+
+      <ol class="steps">
+        <li>Keep the same sales range selected.</li>
+        <li>Return to <strong>Conditional Formatting</strong>.</li>
+        <li>Select <strong>Top/Bottom Rules</strong>.</li>
+        <li>Select <strong>Bottom 10%</strong>.</li>
+        <li>Apply a red formatting option.</li>
+      </ol>
+
+      <div class="insight">
+        <strong>Managerial use:</strong>
+        The lecture emphasizes that formatting should make information easier to
+        interpret quickly. In this example, a manager can immediately identify the
+        strongest and weakest performers without scanning every number individually.
+      </div>
+
+      <h3>The Percentage Can Be Customized</h3>
+
+      <p>
+         the rule does not have to use 10%. Depending on the
+        purpose of the analysis, a different percentage, such as the top and bottom
+        20%, could be more appropriate.
+      </p>
+      
+      <figure class="video-figure">
+  <video class="medium" controls preload="metadata">
+    <source
+      src="https://raw.githubusercontent.com/silvanach78/50A1_Excel/main/Conditional%20Formatting%20(1).mp4"
+      type="video/mp4">
+    Your browser does not support the HTML5 video element.
+  </video>
+
+  <figcaption>
+    Figure 1. Conditional formatting is used to highlight information in Excel.
+  </figcaption>
+</figure>
+
+    </section>
+
+
+    <!-- ================================================= -->
+    <section id="learning-check" class="closing-section">
+      <h2 style="margin-top:0;color:var(--accent);">What You Should Be Able to Do</h2>
+
+      <div class="checklist">
+        <p><strong>After completing this lecture and reading, you should be able to:</strong></p>
+        <ul>
+          <li>Explain the difference between a workbook and a worksheet.</li>
+          <li>Rename worksheet tabs.</li>
+          <li>Use AutoFill to extend an employee-ID sequence.</li>
+          <li>Explain the difference between RAND() and RANDBETWEEN().</li>
+          <li>Use RANDBETWEEN() to generate sample whole-number data.</li>
+          <li>Explain why random values can change when Excel recalculates.</li>
+          <li>Format numerical values as currency.</li>
+          <li>Use SUM(), MIN(), MAX(), AVERAGE(), and COUNT().</li>
+          <li>Use AutoSum to create a SUM formula quickly.</li>
+          <li>Move and copy worksheet data.</li>
+          <li>Recognize that ##### usually means a column is too narrow.</li>
+          <li>Use AutoFit after moving values into a narrow column.</li>
+          <li>Describe how conditional formatting can highlight important values.</li>
+          <li>Apply top and bottom percentage rules using conditional formatting.</li>
+        </ul>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const links = Array.from(document.querySelectorAll(".sidebar a[href^='#']"));
+  const sections = links
+    .map(link => document.querySelector(link.getAttribute("href")))
+    .filter(Boolean);
+
+  const observer = new IntersectionObserver((entries) => {
+    const visible = entries
+      .filter(entry => entry.isIntersecting)
+      .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+
+    if (!visible.length) return;
+
+    const id = visible[0].target.id;
+    links.forEach(link => {
+      link.classList.toggle("active", link.getAttribute("href") === "#" + id);
+    });
+  }, {
+    rootMargin: "-18% 0px -72% 0px",
+    threshold: 0
+  });
+
+  sections.forEach(section => observer.observe(section));
+});
+</script>
+
+</body>
+</html>
+
