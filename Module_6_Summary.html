@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Data Analysis with PivotTables | Excel for Business Managers</title>
+
+<style>
+:root {
+  --bg: #f7f8fa;
+  --panel: #ffffff;
+  --ink: #222831;
+  --muted: #5c6773;
+  --line: #d7dde5;
+  --accent: #1f6f4a;
+  --accent-soft: #e9f5ef;
+  --accent-mid: #bfe3d2;
+  --note-bg: #fff7e8;
+  --note-line: #e6cf95;
+  --example-bg: #f3f8fb;
+  --example-line: #4f89a6;
+  --code-bg: #202522;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+  line-height: 1.65;
+}
+
+a { color: #0b5ea8; }
+
+/* ----------------------
+   PAGE LAYOUT
+------------------- */
+.layout {
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr);
+  gap: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 6px;
+}
+
+/* ----------------------
+   STICKY LEFT NAVIGATION
+------------------- */
+.sidebar {
+  position: sticky;
+  top: 6px;
+  align-self: start;
+  max-height: calc(100vh - 12px);
+  overflow-y: auto;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 18px 18px 16px;
+  box-shadow: 0 6px 20px rgba(34,40,49,.06);
+}
+
+.sidebar h2 {
+  margin: 0 0 6px;
+  font-size: 1.45rem;
+  color: var(--accent);
+}
+
+.sidebar p {
+  margin: 0 0 14px;
+  color: var(--muted);
+  font-size: .92rem;
+}
+
+.toc-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.toc-list li {
+  margin: 3px 0;
+}
+
+.toc-list a {
+  display: block;
+  text-decoration: none;
+  color: #334155;
+  padding: 6px 8px;
+  border-radius: 8px;
+  font-size: .94rem;
+  line-height: 1.35;
+  transition: background .15s ease, color .15s ease;
+}
+
+.toc-list a:hover,
+.toc-list a.active {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.toc-list a.active {
+  font-weight: 700;
+}
+
+/* ----------------------
+   MAIN CONTENT
+------------------- */
+.content {
+  min-width: 0;
+}
+
+.frontmatter,
+.module,
+.closing-section {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 24px 26px;
+  box-shadow: 0 6px 18px rgba(34,40,49,.05);
+  margin-bottom: 16px;
+}
+
+.frontmatter {
+  border-top: 7px solid var(--accent);
+}
+
+.frontmatter .course-label {
+  text-transform: uppercase;
+  font-size: .9rem;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  color: var(--accent);
+  margin-bottom: 5px;
+}
+
+.frontmatter h1 {
+  margin: 0;
+  font-size: 2rem;
+  line-height: 1.15;
+}
+
+.subtitle {
+  margin: 9px 0 0;
+  color: var(--muted);
+  font-size: 1.06rem;
+}
+
+h2, h3, h4 {
+  scroll-margin-top: 24px;
+}
+
+.module > h2 {
+  margin: 0 0 14px;
+  font-size: 1.55rem;
+  color: var(--accent);
+  line-height: 1.25;
+  border-bottom: 2px solid var(--accent-soft);
+  padding-bottom: 8px;
+}
+
+h3 {
+  margin: 28px 0 10px;
+  font-size: 1.28rem;
+  color: #244f3b;
+}
+
+h4 {
+  margin: 22px 0 8px;
+  font-size: 1.06rem;
+}
+
+p {
+  margin: 0 0 14px;
+}
+
+ul, ol {
+  margin-top: 8px;
+  margin-bottom: 16px;
+}
+
+li { margin-bottom: 7px; }
+
+/* ----------------------
+   INFORMATION BOXES
+------------------- */
+.insight,
+.example-box,
+.note,
+.remember-box {
+  padding: 13px 15px;
+  border-radius: 8px;
+  margin: 16px 0;
+}
+
+.insight {
+  background: var(--accent-soft);
+  border-right: 4px solid var(--accent);
+}
+
+.example-box {
+  background: var(--example-bg);
+  border-left: 4px solid var(--example-line);
+}
+
+.note {
+  background: var(--note-bg);
+  border-left: 4px solid var(--note-line);
+}
+
+.remember-box {
+  background: var(--accent-soft);
+  border-left: 4px solid var(--accent);
+}
+
+.box-title {
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+/* ----------------------
+   TABLES - EXCEL STYLE
+------------------- */
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0 16px;
+  font-size: .96rem;
+  background: #ffffff;
+  border: 1px solid #b7c9be;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+/* Header row */
+th {
+  text-align: left;
+  font-weight: 700;
+  padding: 11px 12px;
+  color: #ffffff;
+  background: #217346; /* Excel green */
+  border: 1px solid #185c37;
+}
+
+/* Regular cells */
+td {
+  padding: 11px 12px;
+  vertical-align: top;
+  border: 1px solid #d5ded9;
+  color: #222222;
+  background: #ffffff;
+}
+
+/* Alternating Excel-style banded rows */
+tbody tr:nth-child(even) td {
+  background: #ededed;
+}
+
+/* Optional hover effect */
+tbody tr:hover td {
+  background: #dceee3;
+}
+
+/* Keep formulas and inline code readable inside tables */
+td .formula,
+th .formula {
+  white-space: nowrap;
+}
+
+/* Slightly emphasize first column when useful */
+tbody td:first-child {
+  font-weight: 500;
+}
+
+/* Responsive tables */
+@media (max-width: 700px) {
+  table {
+    font-size: .9rem;
+  }
+
+  th,
+  td {
+    padding: 9px 8px;
+  }
+}
+/* ----------------------
+   FORMULAS & KEYS
+------------------- */
+.formula {
+  display: inline-block;
+  background: #f1f3f2;
+  border: 1px solid #d4d8d6;
+  border-radius: 5px;
+  padding: 3px 7px;
+  font-family: Consolas, "Courier New", monospace;
+  font-weight: 700;
+  color: #173d2b;
+}
+
+.formula-block {
+  background: var(--code-bg);
+  color: #fff;
+  font-family: Consolas, "Courier New", monospace;
+  padding: 14px 17px;
+  border-radius: 8px;
+  margin: 15px 0;
+  overflow-x: auto;
+}
+
+kbd {
+  display: inline-block;
+  padding: 2px 7px;
+  font-size: .9em;
+  background: #f1f1f1;
+  border: 1px solid #c8c8c8;
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* ----------------------
+   NUMBERED STEPS
+------------------- */
+.steps {
+  counter-reset: step;
+  list-style: none;
+  padding-left: 0;
+}
+
+.steps li {
+  position: relative;
+  margin: 15px 0;
+  padding-left: 46px;
+  min-height: 32px;
+}
+
+.steps li::before {
+  counter-increment: step;
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 30px;
+  height: 30px;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 30px;
+  font-weight: 700;
+}
+
+/* ----------------------
+   FIGURES
+------------------- */
+figure {
+  margin: 22px 0 18px;
+  text-align: center;
+}
+
+figure img {
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #fff;
+}
+
+/* Optional figure sizes */
+figure img.small {
+  max-width: 400px;
+}
+
+figure img.medium {
+  max-width: 650px;
+}
+
+figure img.large {
+  max-width: 900px;
+}
+
+figcaption {
+  margin-top: 9px;
+  font-size: .94rem;
+  color: #44515f;
+  font-style: italic;
+}
+.video-figure video.small {
+  width: 100%;
+  max-width: 400px;
+}
+
+.video-figure video.medium {
+  width: 100%;
+  max-width: 650px;
+}
+
+.video-figure video.large {
+  width: 100%;
+  max-width: 900px;
+}
+/* ----------------------
+   LEARNING CHECKLIST
+------------------- */
+.checklist {
+  background: #fafafa;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 18px 20px;
+}
+
+/* ----------------------
+   RESPONSIVE LAYOUT
+------------------- */
+@media (max-width: 1000px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    position: static;
+    max-height: none;
+  }
+
+  .toc-list {
+    columns: 2;
+    column-gap: 20px;
+  }
+
+  .toc-list li {
+    break-inside: avoid;
+  }
+}
+
+@media (max-width: 650px) {
+  .frontmatter,
+  .module,
+  .closing-section {
+    padding: 20px 18px;
+  }
+
+  .toc-list {
+    columns: 1;
+  }
+
+  .frontmatter h1 {
+    font-size: 1.65rem;
+  }
+}
+</style>
+</head>
+
+<body>
+<div class="layout">
+
+  <aside class="sidebar" aria-label="Table of contents">
+    <h2>Contents</h2>
+    <p>Select a topic to jump directly to that section.</p>
+
+    <ul class="toc-list">
+      <li><a href="#about">About This Reading</a></li>
+      <li><a href="#topic1">1. Working with Real-World Data</a></li>
+      <li><a href="#topic2">2. Understanding the Data Dictionary</a></li>
+      <li><a href="#topic3">3. Creating a PivotTable</a></li>
+      <li><a href="#topic4">4. Building the PivotTable</a></li>
+      <li><a href="#topic5">5. Filtering PivotTable Data</a></li>
+      <li><a href="#topic6">6. Summarizing Values</a></li>
+      <li><a href="#topic7">7. Formatting a PivotTable</a></li>
+      <li><a href="#topic8">8. Creating a PivotChart</a></li>
+      <li><a href="#topic9">9. Formatting a PivotChart</a></li>
+      <li><a href="#learning-check">What You Should Be Able to Do</a></li>
+    </ul>
+  </aside>
+
+  <main class="content">
+
+    <section class="frontmatter" id="about">
+      <div class="course-label">Excel for Business Managers</div>
+      <h1>Data Analysis with PivotTables</h1>
+      <p class="subtitle">
+        Summarizing large datasets with PivotTables and communicating the results with PivotCharts.
+      </p>
+
+      <div class="insight" style="margin-top:20px;">
+        <strong>How to use this reading:</strong>
+        Use the navigation menu to move directly to any topic you want to review.
+        This module focuses on turning a large, detailed dataset into useful managerial summaries.
+      </div>
+
+      <p>
+        PivotTables are among Excel's most powerful tools for exploring large datasets.
+        Rather than manually searching through thousands of rows, you can organize,
+        filter, compare, and summarize data by dragging fields into different areas
+        of a PivotTable.
+      </p>
+
+      <p>
+        This module uses publicly available hospital patient-experience data as an
+        example. The dataset contains hundreds of thousands of rows, making it a useful
+        demonstration of why PivotTables are valuable when working with real-world data.
+      </p>
+    </section>
+
+
+    <!-- ================================================= -->
+    <section id="topic1" class="module">
+      <h2>1. Working with Real-World Data</h2>
+
+      <p>
+        Real-world datasets are often much larger and more complex than the small
+        examples used for practice. A single dataset may contain thousands of records,
+        many variables, and multiple related files.
+      </p>
+
+      <p>
+        The hospital dataset used in this module comes from the U.S. Centers for
+        Medicare &amp; Medicaid Services (CMS) Provider Data Catalog. The downloaded
+        archive contains multiple CSV files and a data dictionary.
+      </p>
+      <p>The image below shows where to locate the latest dataset: <strong>Provider Data Catalog > Hospitals > View Data Archives.</strong>
+      </p>
+   <figure>
+        <img class="medium"  src="https://raw.githubusercontent.com/silvanach78/50A1_Excel/main/M6_Dataset.png"
+             alt="Screenshot of the CMS Provider Data Catalog Hospitals data archives page. The 2026 data archives section is expanded. A magenta box highlights the August 13, 2026 file labeled “08/13/2026 Theme: hospitals (2026-08-13),” which students should select to download the ZIP file used for Module 6.">
+        <figcaption>
+          Figure 1. CMS Hospitals Data Archives page showing the most recent hospital data file used for the Module 6 PivotTable exercises.
+        </figcaption>
+      </figure>
+
+      <h3>CSV Files</h3>
+
+      <p>
+        <strong>CSV</strong> stands for <strong>Comma-Separated Values</strong>.
+        CSV files store tabular data in a simple text-based format and can be opened
+        directly in Excel.
+      </p>
+
+      <div class="remember-box">
+        <div class="box-title">Large Datasets Require Different Tools</div>
+        A dataset with hundreds of thousands of rows is not practical to analyze by
+        manually scrolling, selecting, or copying individual records. PivotTables allow
+        you to summarize the data without rearranging the raw file.
+      </div>
+
+      <h3>Fields in the Hospital Dataset</h3>
+
+      <p>
+        Examples of fields include:
+      </p>
+
+      <ul>
+        <li>Facility ID</li>
+        <li>Facility Name</li>
+        <li>Address</li>
+        <li>City/Town</li>
+        <li>State</li>
+        <li>ZIP Code</li>
+        <li>County</li>
+        <li>Telephone Number</li>
+        <li>HCAHPS Question</li>
+        <li>HCAHPS Answer Percent</li>
+        <li>HCAHPS Linear Mean Value</li>
+      </ul>
+    </section>
+
+
+    <!-- ================================================= -->
+    <section id="topic2" class="module">
+      <h2>2. Understanding the Data Dictionary</h2>
+
+      <p>
+        Large datasets are often accompanied by a <strong>data dictionary</strong>.
+        A data dictionary explains the fields and measures contained in the dataset.
+      </p>
+
+      <p>
+        Before analyzing an unfamiliar dataset, review the data dictionary to understand
+        what each variable means and how the measures are defined.
+      </p>
+
+      <h3>HCAHPS Patient Experience Measures</h3>
+
+      <p>
+        The analysis in this module focuses on HCAHPS patient-experience data.
+        HCAHPS includes measures related to areas such as:
+      </p>
+
+      <ul>
+        <li>Nurse communication</li>
+        <li>Doctor communication</li>
+        <li>Staff responsiveness</li>
+        <li>Communication about medicines</li>
+        <li>Overall patient experience</li>
+      </ul>
+
+      <h3>Answer Percent vs. Linear Mean Value</h3>
+
+      <p>
+        Some HCAHPS questions are represented by several response percentages.
+        For example, nurse communication may contain separate percentages for
+        patients who report that nurses <em>always</em>, <em>usually</em>, or
+        <em>sometimes/never</em> communicated well.
+      </p>
+
+      <p>
+        The <strong>HCAHPS Linear Mean Value</strong> summarizes the distribution
+        of responses into a single score on a 0-to-100 scale. This makes it useful
+        for comparing hospitals on one measure.
+      </p>
+
+      <div class="insight">
+        <strong>When in doubt, return to the raw data and the data dictionary.</strong>
+        Understanding what a field actually measures is essential before summarizing
+        or interpreting it.
+      </div>
+    </section>
+
+
+    <!-- ================================================= -->
+    <section id="topic3" class="module">
+      <h2>3. Creating a PivotTable</h2>
+
+      <p>
+        A PivotTable summarizes a large dataset without changing the underlying raw data.
+        Excel can automatically identify the full range when a cell inside the dataset
+        is selected.
+      </p>
+
+      <h3>Create a PivotTable</h3>
+
+      <ol class="steps">
+        <li>Select a cell inside the dataset.</li>
+        <li>Go to the <strong>Insert</strong> tab.</li>
+        <li>Select <strong>PivotTable</strong>.</li>
+        <li>Confirm that Excel identified the correct table or range.</li>
+        <li>Choose <strong>New Worksheet</strong> as the location.</li>
+        <li>Select <strong>OK</strong>.</li>
+      </ol>
+
+      <p>
+        Excel opens a new worksheet containing an empty PivotTable and a list of
+        available fields.
+      </p>
+
+      <div class="note">
+        <div class="box-title">Why a New Worksheet?</div>
+        Placing the PivotTable on a separate worksheet keeps the raw data intact and
+        gives the analysis its own workspace.
+      </div>
+    </section>
+
+
+    <!-- ================================================= -->
+    <section id="topic4" class="module">
+      <h2>4. Building the PivotTable</h2>
+
+      <p>
+        PivotTables are constructed by dragging fields into four areas:
+        <strong>Rows</strong>, <strong>Columns</strong>, <strong>Values</strong>,
+        and <strong>Filters</strong>.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>PivotTable Area</th>
+            <th>Purpose</th>
+            <th>Example</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Rows</td>
+            <td>Creates categories listed vertically.</td>
+            <td>Facility Name</td>
+          </tr>
+          <tr>
+            <td>Columns</td>
+            <td>Creates categories displayed across the top.</td>
+            <td>HCAHPS Question</td>
+          </tr>
+          <tr>
+            <td>Values</td>
+            <td>Contains the numerical measure being summarized.</td>
+            <td>HCAHPS Linear Mean Value</td>
+          </tr>
+          <tr>
+            <td>Filters</td>
+            <td>Limits the analysis to selected records.</td>
+            <td>State and City/Town</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Rows: Facility Name</h3>
+
+      <p>
+        Dragging <strong>Facility Name</strong> into Rows creates one row for each
+        facility represented in the dataset.
+      </p>
+
+      <h3>Columns: HCAHPS Question</h3>
+
+      <p>
+        Dragging <strong>HCAHPS Question</strong> into Columns creates a separate
+        column for each selected patient-experience measure.
+      </p>
+
+      <p>
+        For this analysis, useful measures include:
+      </p>
+
+      <ul>
+        <li>Doctor Communication Linear Mean Score</li>
+        <li>Nurse Communication Linear Mean Score</li>
+      </ul>
+
+      <h3>Values: HCAHPS Linear Mean Value</h3>
+
+      <p>
+        Drag <strong>HCAHPS Linear Mean Value</strong> into Values to place the
+        numerical patient-experience scores inside the table.
+      </p>
+    </section>
+
+
+    <!-- ================================================= -->
+    <section id="topic5" class="module">
+      <h2>5. Filtering PivotTable Data</h2>
+
+      <p>
+        Filters make it possible to focus a PivotTable on a relevant subset of a
+        much larger dataset.
+      </p>
+
+      <h3>Filter by State</h3>
+
+      <p>
+        Drag <strong>State</strong> into the Filters area. Use the filter drop-down
+        to select Texas.
+      </p>
+
+      <h3>Filter by City/Town</h3>
+
+      <p>
+        Drag <strong>City/Town</strong> into the Filters area and select Houston.
+        The PivotTable now focuses on hospitals in Houston, Texas rather than comparing
+        every hospital in the country.
+      </p>
+
+      <div class="insight">
+        <strong>Managerial relevance:</strong>
+        A comparison is more useful when the records are meaningfully comparable.
+        Filtering by geography can narrow a national dataset to a relevant local market.
+      </div>
+
+      <h3>Filtering the Column Field</h3>
+
+      <p>
+        A field placed in Columns can also be filtered. If HCAHPS Question contains
+        many measures, deselect the measures that are not relevant and retain only
+        those you want to compare.
+      </p>
+    </section>
+
+
+    <!-- ================================================= -->
+    <section id="topic6" class="module">
+      <h2>6. Summarizing Values</h2>
+
+      <p>
+        When a numerical field is added to Values, Excel may initially summarize it
+        using <strong>Count</strong>. The summary calculation can be changed using
+        Value Field Settings.
+      </p>
+
+      <h3>Change Count to Average</h3>
+
+      <ol class="steps">
+        <li>Open the menu for the field in the Values area.</li>
+        <li>Select <strong>Value Field Settings</strong>.</li>
+        <li>Choose <strong>Average</strong>.</li>
+        <li>Select <strong>OK</strong>.</li>
+      </ol>
+
+      <p>
+        Using Average is appropriate when comparing the HCAHPS Linear Mean Value
+        for selected measures.
+      </p>
+
+      <div class="remember-box">
+        <div class="box-title">Check the Summary Function</div>
+        Do not assume Excel selected the correct calculation automatically.
+        Always confirm whether the Values area is using Count, Sum, Average, Max,
+        or another appropriate summary.
+      </div>
+
+      <h3>Missing or Unreported Values</h3>
+
+      <p>
+        Some facilities may not report a particular measure. This can occur because
+        certain hospital types are not required to report every HCAHPS variable.
+        Missing values should not automatically be treated as poor performance.
+      </p>
+    </section>
+
+
+    <!-- ================================================= -->
+    <section id="topic7" class="module">
+      <h2>7. Formatting a PivotTable</h2>
+
+      <p>
+        Conditional formatting can make a PivotTable easier to interpret by visually
+        distinguishing higher and lower scores.
+      </p>
+
+      <h3>Apply Conditional Formatting One Measure at a Time</h3>
+
+      <p>
+        When the PivotTable contains multiple measures, apply conditional formatting
+        to each measure separately.
+      </p>
+
+      <div class="remember-box">
+        <div class="box-title">Do Not Combine Different Measures in One Color Scale</div>
+        Selecting several different variables at once can create a misleading color
+        scale because Excel evaluates the entire selected range together.
+      </div>
+
+      <h3>Use a Color Scale</h3>
+
+      <ol class="steps">
+        <li>Select the values for one measure, such as Doctor Communication.</li>
+        <li>Go to <strong>Home &gt; Conditional Formatting</strong>.</li>
+        <li>Select <strong>Color Scales</strong>.</li>
+        <li>Choose a scale in which higher values are represented as better performance.</li>
+        <li>Repeat the process separately for the next measure.</li>
+      </ol>
+
+      <p>
+        For communication scores, a higher value indicates better performance, so
+        a green-to-red scale can be interpreted with green as higher and red as lower.
+      </p>
+    </section>
+
+
+    <!-- ================================================= -->
+    <section id="topic8" class="module">
+      <h2>8. Creating a PivotChart</h2>
+
+      <p>
+        A <strong>PivotChart</strong> provides a visual representation of summarized
+        PivotTable-style data while preserving the ability to filter and reorganize
+        fields.
+      </p>
+
+      <h3>Create a PivotChart</h3>
+
+      <ol class="steps">
+        <li>Select a cell inside the raw dataset.</li>
+        <li>Go to the <strong>Insert</strong> tab.</li>
+        <li>Select <strong>PivotChart</strong>.</li>
+        <li>Confirm the data range.</li>
+        <li>Select <strong>OK</strong>.</li>
+      </ol>
+
+      <h3>PivotChart Areas</h3>
+
+      <p>
+        PivotCharts use areas that closely correspond to the PivotTable structure:
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>PivotChart Area</th>
+            <th>Example Field</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Axis</td>
+            <td>Facility Name</td>
+          </tr>
+          <tr>
+            <td>Legend</td>
+            <td>HCAHPS Question</td>
+          </tr>
+          <tr>
+            <td>Values</td>
+            <td>HCAHPS Linear Mean Value</td>
+          </tr>
+          <tr>
+            <td>Filters</td>
+            <td>State and City/Town</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>
+        The same filters used in the PivotTable can be applied to the PivotChart,
+        such as Texas for State and Houston for City/Town.
+      </p>
+    </section>
+
+
+    <!-- ================================================= -->
+    <section id="topic9" class="module">
+      <h2>9. Formatting a PivotChart</h2>
+
+      <p>
+        PivotCharts can be adjusted to make patterns easier to see and to improve
+        the usefulness of the visualization.
+      </p>
+
+      <h3>Adjusting the Vertical Axis Bounds</h3>
+
+      <p>
+        When all scores are clustered near the upper end of a 0-to-100 scale,
+        the differences between facilities may be difficult to see.
+      </p>
+
+      <p>
+        The vertical axis bounds can be adjusted by selecting the axis and changing
+        the minimum bound. For example, changing the lower bound from 0 to 75 makes
+        variation among high scores more visible.
+      </p>
+
+      <div class="note">
+        <div class="box-title">Interpret Axis Changes Carefully</div>
+        Changing the axis range can make small differences appear more noticeable.
+        Use the adjustment to support analysis, but interpret the visual scale carefully.
+      </div>
+
+      <h3>Switch Row and Column Orientation</h3>
+
+      <p>
+        The <strong>Switch Row/Column</strong> command changes how categories and
+        series are arranged in the chart. This can make a chart easier to read,
+        depending on the number of hospitals and measures being compared.
+      </p>
+
+      <h3>Change the Chart Type</h3>
+
+      <p>
+        A PivotChart is not limited to one chart format. You can change the chart
+        type when another visual form better communicates the data.
+      </p>
+
+      <p>Available choices may include:</p>
+
+      <ul>
+        <li>Column or bar charts</li>
+        <li>Line charts</li>
+        <li>Pie charts</li>
+        <li>Other Excel chart types</li>
+      </ul>
+
+      <div class="insight">
+        <strong>Choose the chart type based on the analytical question.</strong>
+        A chart should make the comparison easier to understand rather than simply
+        provide a visual version of the data.
+      </div>
+    </section>
+
+
+    <!-- ================================================= -->
+    <section id="learning-check" class="closing-section">
+      <h2 style="margin-top:0;color:var(--accent);">What You Should Be Able to Do</h2>
+
+      <div class="checklist">
+        <p><strong>After completing this module, you should be able to:</strong></p>
+        <ul>
+          <li>Explain why PivotTables are useful for large datasets.</li>
+          <li>Describe the purpose of a data dictionary.</li>
+          <li>Recognize CSV files as a common format for tabular data.</li>
+          <li>Create a PivotTable from a large dataset.</li>
+          <li>Place fields into Rows, Columns, Values, and Filters.</li>
+          <li>Filter PivotTable records by State and City/Town.</li>
+          <li>Filter a column field to retain selected measures.</li>
+          <li>Change a PivotTable summary from Count to Average.</li>
+          <li>Interpret missing or unreported values appropriately.</li>
+          <li>Apply conditional formatting to one PivotTable measure at a time.</li>
+          <li>Create a PivotChart from a dataset.</li>
+          <li>Place fields into Axis, Legend, Values, and Filters.</li>
+          <li>Change the vertical-axis bounds of a PivotChart.</li>
+          <li>Switch row and column orientation in a PivotChart.</li>
+          <li>Change the chart type when another visualization is more appropriate.</li>
+        </ul>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const links = Array.from(document.querySelectorAll(".sidebar a[href^='#']"));
+  const sections = links
+    .map(link => document.querySelector(link.getAttribute("href")))
+    .filter(Boolean);
+
+  const observer = new IntersectionObserver((entries) => {
+    const visible = entries
+      .filter(entry => entry.isIntersecting)
+      .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+
+    if (!visible.length) return;
+
+    const id = visible[0].target.id;
+    links.forEach(link => {
+      link.classList.toggle("active", link.getAttribute("href") === "#" + id);
+    });
+  }, {
+    rootMargin: "-18% 0px -72% 0px",
+    threshold: 0
+  });
+
+  sections.forEach(section => observer.observe(section));
+});
+</script>
+
+</body>
+</html>
