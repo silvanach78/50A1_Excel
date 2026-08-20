@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Spreadsheet Formatting and Presentation | Excel for Business Managers</title>
+
+<style>
+:root {
+  --bg: #f7f8fa;
+  --panel: #ffffff;
+  --ink: #222831;
+  --muted: #5c6773;
+  --line: #d7dde5;
+  --accent: #1f6f4a;
+  --accent-soft: #e9f5ef;
+  --accent-mid: #bfe3d2;
+  --note-bg: #fff7e8;
+  --note-line: #e6cf95;
+  --example-bg: #f3f8fb;
+  --example-line: #4f89a6;
+  --code-bg: #202522;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+  line-height: 1.65;
+}
+
+a { color: #0b5ea8; }
+
+/* ----------------------
+   PAGE LAYOUT
+------------------- */
+.layout {
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr);
+  gap: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 6px;
+}
+
+/* ----------------------
+   STICKY LEFT NAVIGATION
+------------------- */
+.sidebar {
+  position: sticky;
+  top: 6px;
+  align-self: start;
+  max-height: calc(100vh - 12px);
+  overflow-y: auto;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 18px 18px 16px;
+  box-shadow: 0 6px 20px rgba(34,40,49,.06);
+}
+
+.sidebar h2 {
+  margin: 0 0 6px;
+  font-size: 1.45rem;
+  color: var(--accent);
+}
+
+.sidebar p {
+  margin: 0 0 14px;
+  color: var(--muted);
+  font-size: .92rem;
+}
+
+.toc-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.toc-list li {
+  margin: 3px 0;
+}
+
+.toc-list a {
+  display: block;
+  text-decoration: none;
+  color: #334155;
+  padding: 6px 8px;
+  border-radius: 8px;
+  font-size: .94rem;
+  line-height: 1.35;
+  transition: background .15s ease, color .15s ease;
+}
+
+.toc-list a:hover,
+.toc-list a.active {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.toc-list a.active {
+  font-weight: 700;
+}
+
+/* ----------------------
+   MAIN CONTENT
+------------------- */
+.content {
+  min-width: 0;
+}
+
+.frontmatter,
+.module,
+.closing-section {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 24px 26px;
+  box-shadow: 0 6px 18px rgba(34,40,49,.05);
+  margin-bottom: 16px;
+}
+
+.frontmatter {
+  border-top: 7px solid var(--accent);
+}
+
+.frontmatter .course-label {
+  text-transform: uppercase;
+  font-size: .9rem;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  color: var(--accent);
+  margin-bottom: 5px;
+}
+
+.frontmatter h1 {
+  margin: 0;
+  font-size: 2rem;
+  line-height: 1.15;
+}
+
+.subtitle {
+  margin: 9px 0 0;
+  color: var(--muted);
+  font-size: 1.06rem;
+}
+
+h2, h3, h4 {
+  scroll-margin-top: 24px;
+}
+
+.module > h2 {
+  margin: 0 0 14px;
+  font-size: 1.55rem;
+  color: var(--accent);
+  line-height: 1.25;
+  border-bottom: 2px solid var(--accent-soft);
+  padding-bottom: 8px;
+}
+
+h3 {
+  margin: 28px 0 10px;
+  font-size: 1.28rem;
+  color: #244f3b;
+}
+
+h4 {
+  margin: 22px 0 8px;
+  font-size: 1.06rem;
+}
+
+p {
+  margin: 0 0 14px;
+}
+
+ul, ol {
+  margin-top: 8px;
+  margin-bottom: 16px;
+}
+
+li { margin-bottom: 7px; }
+
+/* ----------------------
+   INFORMATION BOXES
+------------------- */
+.insight,
+.example-box,
+.note,
+.remember-box {
+  padding: 13px 15px;
+  border-radius: 8px;
+  margin: 16px 0;
+}
+
+.insight {
+  background: var(--accent-soft);
+  border-right: 4px solid var(--accent);
+}
+
+.example-box {
+  background: var(--example-bg);
+  border-left: 4px solid var(--example-line);
+}
+
+.note {
+  background: var(--note-bg);
+  border-left: 4px solid var(--note-line);
+}
+
+.remember-box {
+  background: var(--accent-soft);
+  border-left: 4px solid var(--accent);
+}
+
+.box-title {
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+/* ----------------------
+   TABLES - EXCEL STYLE
+------------------- */
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0 16px;
+  font-size: .96rem;
+  background: #ffffff;
+  border: 1px solid #b7c9be;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+/* Header row */
+th {
+  text-align: left;
+  font-weight: 700;
+  padding: 11px 12px;
+  color: #ffffff;
+  background: #217346; /* Excel green */
+  border: 1px solid #185c37;
+}
+
+/* Regular cells */
+td {
+  padding: 11px 12px;
+  vertical-align: top;
+  border: 1px solid #d5ded9;
+  color: #222222;
+  background: #ffffff;
+}
+
+/* Alternating Excel-style banded rows */
+tbody tr:nth-child(even) td {
+  background: #ededed;
+}
+
+/* Optional hover effect */
+tbody tr:hover td {
+  background: #dceee3;
+}
+
+/* Keep formulas and inline code readable inside tables */
+td .formula,
+th .formula {
+  white-space: nowrap;
+}
+
+/* Slightly emphasize first column when useful */
+tbody td:first-child {
+  font-weight: 500;
+}
+
+/* Responsive tables */
+@media (max-width: 700px) {
+  table {
+    font-size: .9rem;
+  }
+
+  th,
+  td {
+    padding: 9px 8px;
+  }
+}
+/* ----------------------
+   FORMULAS & KEYS
+------------------- */
+.formula {
+  display: inline-block;
+  background: #f1f3f2;
+  border: 1px solid #d4d8d6;
+  border-radius: 5px;
+  padding: 3px 7px;
+  font-family: Consolas, "Courier New", monospace;
+  font-weight: 700;
+  color: #173d2b;
+}
+
+.formula-block {
+  background: var(--code-bg);
+  color: #fff;
+  font-family: Consolas, "Courier New", monospace;
+  padding: 14px 17px;
+  border-radius: 8px;
+  margin: 15px 0;
+  overflow-x: auto;
+}
+
+kbd {
+  display: inline-block;
+  padding: 2px 7px;
+  font-size: .9em;
+  background: #f1f1f1;
+  border: 1px solid #c8c8c8;
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* ----------------------
+   NUMBERED STEPS
+------------------- */
+.steps {
+  counter-reset: step;
+  list-style: none;
+  padding-left: 0;
+}
+
+.steps li {
+  position: relative;
+  margin: 15px 0;
+  padding-left: 46px;
+  min-height: 32px;
+}
+
+.steps li::before {
+  counter-increment: step;
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 30px;
+  height: 30px;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 30px;
+  font-weight: 700;
+}
+
+/* ----------------------
+   FIGURES
+------------------- */
+figure {
+  margin: 22px 0 18px;
+  text-align: center;
+}
+
+figure img {
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #fff;
+}
+
+/* Optional figure sizes */
+figure img.small {
+  max-width: 400px;
+}
+
+figure img.medium {
+  max-width: 650px;
+}
+
+figure img.large {
+  max-width: 900px;
+}
+
+figcaption {
+  margin-top: 9px;
+  font-size: .94rem;
+  color: #44515f;
+  font-style: italic;
+}
+.video-figure video.small {
+  width: 100%;
+  max-width: 400px;
+}
+
+.video-figure video.medium {
+  width: 100%;
+  max-width: 650px;
+}
+
+.video-figure video.large {
+  width: 100%;
+  max-width: 900px;
+}
+/* ----------------------
+   LEARNING CHECKLIST
+------------------- */
+.checklist {
+  background: #fafafa;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 18px 20px;
+}
+
+/* ----------------------
+   RESPONSIVE LAYOUT
+------------------- */
+@media (max-width: 1000px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    position: static;
+    max-height: none;
+  }
+
+  .toc-list {
+    columns: 2;
+    column-gap: 20px;
+  }
+
+  .toc-list li {
+    break-inside: avoid;
+  }
+}
+
+@media (max-width: 650px) {
+  .frontmatter,
+  .module,
+  .closing-section {
+    padding: 20px 18px;
+  }
+
+  .toc-list {
+    columns: 1;
+  }
+
+  .frontmatter h1 {
+    font-size: 1.65rem;
+  }
+}
+</style>
+</head>
+
+<body>
+<div class="layout">
+
+<aside class="sidebar" aria-label="Table of contents">
+  <h2>Contents</h2>
+  <p>Select a topic to jump directly to that section.</p>
+  <ul class="toc-list">
+    <li><a href="#about">About This Reading</a></li>
+    <li><a href="#topic1">1. Font Formatting</a></li>
+    <li><a href="#topic2">2. Background Color of a Cell</a></li>
+    <li><a href="#topic3">3. Borders</a></li>
+    <li><a href="#topic4">4. Currency</a></li>
+    <li><a href="#topic5">5. Percentages</a></li>
+    <li><a href="#topic6">6. Merge and Center</a></li>
+    <li><a href="#topic7">7. Conditional Formatting</a></li>
+    <li><a href="#learning-check">What You Should Be Able to Do</a></li>
+  </ul>
+</aside>
+
+<main class="content">
+
+<section class="frontmatter" id="about">
+  <div class="course-label">Excel for Business Managers</div>
+  <h1>Spreadsheet Formatting and Presentation</h1>
+  <p class="subtitle">
+    Formatting worksheets for clarity, readability, and managerial interpretation.
+  </p>
+
+  <div class="insight" style="margin-top:20px;">
+    <strong>How to use this reading:</strong>
+    Use the navigation menu to move directly to any topic you want to review.
+    The sections are organized in the same sequence as the Module 3 skills.
+  </div>
+
+  <p>
+    Formatting is more than decoration. In a well-designed worksheet, formatting
+    helps readers understand the structure of the information, distinguish categories,
+    identify important values, and interpret numerical data correctly.
+  </p>
+
+  <p>
+    This module uses a monthly budget as a practical example. The budget is organized
+    around three major categories: <strong>income</strong>, <strong>expenses</strong>,
+    and <strong>savings</strong>. As the worksheet is built, formatting tools are
+    applied to make the information easier to read and use.
+  </p>
+
+  <h3>Building on Earlier Skills</h3>
+  <p>
+    Several previously introduced Excel skills are used again, including renaming
+    worksheets, SUM(), AutoFit, arithmetic formulas, the fill handle, and cell references.
+  </p>
+</section>
+
+<section id="topic1" class="module">
+  <h2>1. Font Formatting</h2>
+
+  <p>
+    Font formatting changes the appearance of text and numerical information in a cell.
+    Excel provides familiar formatting controls for font family, size, emphasis, and color.
+  </p>
+
+  <h3>Common Font Formatting Options</h3>
+  <ul>
+    <li>Font family</li>
+    <li>Font size</li>
+    <li>Bold</li>
+    <li>Italic</li>
+    <li>Underline</li>
+    <li>Font color</li>
+  </ul>
+
+  <h3>Formatting a Worksheet Title</h3>
+  <p>
+    A worksheet title such as <strong>July 2025 Monthly Budget</strong> can be
+    formatted differently from the rest of the worksheet so that it is immediately
+    recognizable as the document title.
+  </p>
+
+  <ol class="steps">
+    <li>Select the cell containing the title.</li>
+    <li>Go to the <strong>Home</strong> tab.</li>
+    <li>Select the desired font family.</li>
+    <li>Adjust the font size as needed.</li>
+    <li>Apply bold, font color, or other emphasis when appropriate.</li>
+  </ol>
+
+  <div class="note">
+    <div class="box-title">Formatting Should Have a Purpose</div>
+    A different font or color can help establish hierarchy, but excessive variation
+    can make a worksheet harder to read. Use formatting to clarify structure.
+  </div>
+</section>
+
+<section id="topic2" class="module">
+  <h2>2. Background Color of a Cell</h2>
+
+  <p>
+    Cell background color, also called <strong>fill color</strong>, can help visually
+    separate sections of a worksheet.
+  </p>
+
+  <p>In a monthly budget, different colors can be assigned to major categories:</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Budget Category</th>
+        <th>Example Color</th>
+        <th>Purpose</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Income</td>
+        <td>Green</td>
+        <td>Visually identifies money coming in.</td>
+      </tr>
+      <tr>
+        <td>Expenses</td>
+        <td>Orange</td>
+        <td>Separates spending from other categories.</td>
+      </tr>
+      <tr>
+        <td>Savings</td>
+        <td>Blue</td>
+        <td>Distinguishes money allocated to savings.</td>
+      </tr>
+      <tr>
+        <td>Left Over</td>
+        <td>Yellow</td>
+        <td>Draws attention to the amount remaining after planned spending and saving.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Apply a Background Color</h3>
+  <ol class="steps">
+    <li>Select the cell or range of cells.</li>
+    <li>Go to the <strong>Home</strong> tab.</li>
+    <li>Select the <strong>Fill Color</strong> command.</li>
+    <li>Choose a color that supports the meaning of the worksheet.</li>
+  </ol>
+
+  <div class="insight">
+    <strong>Use color meaningfully:</strong>
+    Color can create visual categories, but it should help the reader understand
+    the worksheet rather than simply make it more colorful.
+  </div>
+</section>
+
+<section id="topic3" class="module">
+  <h2>3. Borders</h2>
+
+  <p>
+    When background colors are added to a range of cells, the worksheet gridlines
+    may become less visually distinct. Borders can restore structure and make
+    individual cells easier to identify.
+  </p>
+
+  <h3>Apply Borders</h3>
+  <ol class="steps">
+    <li>Select the range of cells.</li>
+    <li>Go to the <strong>Home</strong> tab.</li>
+    <li>Open the <strong>Borders</strong> menu.</li>
+    <li>Select <strong>All Borders</strong> when you want each cell in the range outlined.</li>
+  </ol>
+
+  <div class="example-box">
+    <div class="box-title">Example</div>
+    If the Income section has a green background, applying All Borders creates
+    clear divisions between the individual income entries.
+  </div>
+
+  <h3>Borders and Worksheet Organization</h3>
+  <p>
+    Borders are especially useful when a worksheet contains several categories
+    or when colored cells would otherwise blend together.
+  </p>
+</section>
+
+<section id="topic4" class="module">
+  <h2>4. Currency</h2>
+
+  <p>
+    Financial values should usually be displayed using an appropriate number format.
+    Currency formatting helps readers immediately recognize that a value represents money.
+  </p>
+
+  <h3>Apply Currency Formatting</h3>
+  <ol class="steps">
+    <li>Select the cells containing monetary values.</li>
+    <li>Go to the <strong>Home</strong> tab.</li>
+    <li>Select the appropriate Currency or Accounting format.</li>
+  </ol>
+
+  <p>For example, a value stored as:</p>
+  <div class="formula-block">4000</div>
+
+  <p>may be displayed as:</p>
+  <div class="formula-block">$4,000.00</div>
+
+  <div class="remember-box">
+    <div class="box-title">Formatting Does Not Change the Underlying Number</div>
+    Currency formatting changes how the value appears. Excel still uses the original
+    numerical value in calculations.
+  </div>
+
+  <h3>Using SUM() for Budget Totals</h3>
+  <p>
+    Each budget category can include a total row calculated with SUM().
+  </p>
+
+  <div class="formula-block">=SUM(B5:B17)</div>
+
+  <p>
+    As new income, expense, or savings values are entered within the summed range,
+    the total updates automatically.
+  </p>
+
+  <h3>Calculating the Amount Left Over</h3>
+  <p>
+    The amount remaining after expenses and savings can be calculated with a basic
+    subtraction formula:
+  </p>
+
+  <div class="formula-block">=Total Income - Total Expenses - Total Savings</div>
+
+  <p>Using cell references, the formula might look similar to:</p>
+  <div class="formula-block">=B18-E18-H18</div>
+
+  <div class="insight">
+    <strong>Budgeting principle:</strong>
+    A worksheet can be designed so that every dollar has an intended purpose.
+    As planned expenses or savings change, the amount left over updates automatically.
+  </div>
+</section>
+
+<section id="topic5" class="module">
+  <h2>5. Percentages</h2>
+
+  <p>
+    Percentage formatting is useful when you want to express a value as a proportion
+    of a larger total.
+  </p>
+
+  <h3>Percentage of Total Income</h3>
+
+  <p>
+    Suppose one income source is $4,000 and total monthly income is $7,000.
+    The proportion of total income can be calculated as:
+  </p>
+
+  <div class="formula-block">=4000/7000</div>
+
+  <p>
+    Excel may initially display the result as a decimal, such as
+    <span class="formula">0.5714</span>. Applying percentage formatting changes the
+    display to approximately <strong>57.14%</strong>.
+  </p>
+
+  <h3>Apply Percentage Formatting</h3>
+  <ol class="steps">
+    <li>Select the cell containing the decimal result.</li>
+    <li>Go to the <strong>Home</strong> tab.</li>
+    <li>Select the <strong>Percent Style (%)</strong> command.</li>
+    <li>Increase or decrease decimal places as needed.</li>
+  </ol>
+
+  <h3>Common-Size or Vertical Analysis</h3>
+
+  <p>
+    A common-size analysis expresses individual line items as a percentage of
+    a common denominator. In a budget, useful comparisons include:
+  </p>
+
+  <ul>
+    <li>Each income source as a percentage of total income</li>
+    <li>Each expense as a percentage of total expenses</li>
+    <li>Each expense as a percentage of total income</li>
+    <li>Each savings contribution as a percentage of total income</li>
+  </ul>
+
+  <div class="example-box">
+    <div class="box-title">Example: Expense as a Percentage of Total Income</div>
+    If monthly rent is $1,800 and total income is $7,000:
+    <div class="formula-block">=1800/7000</div>
+    After applying percentage formatting, rent represents approximately
+    <strong>25.71%</strong> of total income.
+  </div>
+
+  <h3>Absolute Cell References</h3>
+
+  <p>
+    When a formula is copied down a column, Excel normally changes both the numerator
+    and denominator references. Sometimes the denominator must remain fixed.
+  </p>
+
+  <p>For example, if B18 contains total income, this formula:</p>
+  <div class="formula-block">=B5/B18</div>
+
+  <p>
+    will change both references if it is copied downward. To keep total income fixed,
+    convert B18 to an <strong>absolute reference</strong>:
+  </p>
+
+  <div class="formula-block">=B5/$B$18</div>
+
+  <p>
+    On many keyboards, pressing <kbd>F4</kbd> while the reference is selected cycles
+    through relative and absolute reference options.
+  </p>
+
+  <div class="remember-box">
+    <div class="box-title">Why the Dollar Signs Matter</div>
+    The dollar signs in <span class="formula">$B$18</span> lock both the column and row.
+    When the formula is filled downward, the numerator can change while the denominator
+    remains fixed.
+  </div>
+
+  <h3>Using the Fill Handle with an Absolute Reference</h3>
+
+  <p>
+    Once the denominator has been made absolute, the formula can be copied down the
+    column with the fill handle. Each row will use a different numerator while continuing
+    to divide by the same total.
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Formula</th>
+        <th>Meaning</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="formula">=B5/$B$18</span></td>
+        <td>First income item divided by total income.</td>
+      </tr>
+      <tr>
+        <td><span class="formula">=B6/$B$18</span></td>
+        <td>Second income item divided by the same total income.</td>
+      </tr>
+      <tr>
+        <td><span class="formula">=E5/$E$18</span></td>
+        <td>First expense divided by total expenses.</td>
+      </tr>
+      <tr>
+        <td><span class="formula">=E5/$B$18</span></td>
+        <td>First expense divided by total income.</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<section id="topic6" class="module">
+  <h2>6. Merge and Center</h2>
+
+  <p>
+    <strong>Merge &amp; Center</strong> combines several adjacent cells into one
+    larger cell and centers the contents across the merged area.
+  </p>
+
+  <p>
+    This can be useful for a worksheet title that applies to several columns.
+  </p>
+
+  <h3>Merge and Center a Title</h3>
+  <ol class="steps">
+    <li>Select the cell containing the title and the adjacent cells the title should span.</li>
+    <li>Go to the <strong>Home</strong> tab.</li>
+    <li>Select <strong>Merge &amp; Center</strong>.</li>
+  </ol>
+
+  <p>
+    The selected cells become one larger cell, and the title is centered within it.
+  </p>
+
+  <h3>Undo Merge and Center</h3>
+  <p>
+    Select the merged cell and choose <strong>Merge &amp; Center</strong> again
+    to return the cells to their previous structure.
+  </p>
+
+  <div class="note">
+    <div class="box-title">Use Merge &amp; Center Selectively</div>
+    It works well for titles and presentation areas, but it should not be used
+    unnecessarily inside datasets where individual cell structure is important.
+  </div>
+</section>
+
+<section id="topic7" class="module">
+  <h2>7. Conditional Formatting</h2>
+
+  <p>
+    Conditional formatting automatically changes the appearance of cells when
+    specified conditions are met.
+  </p>
+
+  <p>
+    In a budget, conditional formatting can help identify the largest expense
+    without requiring the reader to manually compare every value.
+  </p>
+
+  <h3>Highlight the Largest Expense</h3>
+  <ol class="steps">
+    <li>Select the expense values.</li>
+    <li>Go to <strong>Home &gt; Conditional Formatting</strong>.</li>
+    <li>Open <strong>Top/Bottom Rules</strong>.</li>
+    <li>Select the option that identifies the top value or top item.</li>
+    <li>Choose a formatting style, such as red text or a red fill.</li>
+    <li>Apply the rule.</li>
+  </ol>
+
+  <h3>Conditional Formatting Updates Automatically</h3>
+
+  <p>
+    Conditional formatting remains connected to the values in the selected range.
+    If the data changes and another expense becomes the largest value, Excel can
+    automatically move the formatting to the new largest expense.
+  </p>
+
+  <div class="example-box">
+    <div class="box-title">Example</div>
+    If rent is initially the largest expense, it may be highlighted. If a student-loan
+    payment is later increased above the rent amount, the conditional formatting can
+    automatically identify the student-loan payment as the new largest expense.
+  </div>
+
+  <div class="insight">
+    <strong>Managerial value:</strong>
+    Conditional formatting reduces the time required to scan a worksheet and can
+    direct attention to values that require review or action.
+  </div>
+</section>
+
+<section id="learning-check" class="closing-section">
+  <h2 style="margin-top:0;color:var(--accent);">What You Should Be Able to Do</h2>
+
+  <div class="checklist">
+    <p><strong>After completing this module, you should be able to:</strong></p>
+    <ul>
+      <li>Apply font formatting to worksheet text.</li>
+      <li>Use background colors to organize worksheet sections.</li>
+      <li>Apply borders to improve visual structure.</li>
+      <li>Format numerical values as currency.</li>
+      <li>Format decimal values as percentages.</li>
+      <li>Increase or decrease displayed decimal places.</li>
+      <li>Use SUM() to calculate category totals.</li>
+      <li>Create a subtraction formula to calculate a remaining balance.</li>
+      <li>Calculate line items as percentages of a total.</li>
+      <li>Explain the purpose of a common-size or vertical analysis.</li>
+      <li>Use an absolute cell reference such as $B$18.</li>
+      <li>Use F4 to create or cycle through absolute reference options.</li>
+      <li>Copy percentage formulas using the fill handle.</li>
+      <li>Use Merge &amp; Center for worksheet titles.</li>
+      <li>Apply conditional formatting to identify important values.</li>
+      <li>Explain how conditional formatting responds when underlying values change.</li>
+    </ul>
+  </div>
+</section>
+
+</main>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const links = Array.from(document.querySelectorAll(".sidebar a[href^='#']"));
+  const sections = links
+    .map(link => document.querySelector(link.getAttribute("href")))
+    .filter(Boolean);
+
+  const observer = new IntersectionObserver((entries) => {
+    const visible = entries
+      .filter(entry => entry.isIntersecting)
+      .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+
+    if (!visible.length) return;
+
+    const id = visible[0].target.id;
+    links.forEach(link => {
+      link.classList.toggle("active", link.getAttribute("href") === "#" + id);
+    });
+  }, {
+    rootMargin: "-18% 0px -72% 0px",
+    threshold: 0
+  });
+
+  sections.forEach(section => observer.observe(section));
+});
+</script>
+
+</body>
+</html>
+
