@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Data Organization and List Management | Excel for Business Managers</title>
+
+<style>
+:root {
+  --bg: #f7f8fa;
+  --panel: #ffffff;
+  --ink: #222831;
+  --muted: #5c6773;
+  --line: #d7dde5;
+  --accent: #1f6f4a;
+  --accent-soft: #e9f5ef;
+  --accent-mid: #bfe3d2;
+  --note-bg: #fff7e8;
+  --note-line: #e6cf95;
+  --example-bg: #f3f8fb;
+  --example-line: #4f89a6;
+  --code-bg: #202522;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+  line-height: 1.65;
+}
+
+a { color: #0b5ea8; }
+
+/* ----------------------
+   PAGE LAYOUT
+------------------- */
+.layout {
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr);
+  gap: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 6px;
+}
+
+/* ----------------------
+   STICKY LEFT NAVIGATION
+------------------- */
+.sidebar {
+  position: sticky;
+  top: 6px;
+  align-self: start;
+  max-height: calc(100vh - 12px);
+  overflow-y: auto;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 18px 18px 16px;
+  box-shadow: 0 6px 20px rgba(34,40,49,.06);
+}
+
+.sidebar h2 {
+  margin: 0 0 6px;
+  font-size: 1.45rem;
+  color: var(--accent);
+}
+
+.sidebar p {
+  margin: 0 0 14px;
+  color: var(--muted);
+  font-size: .92rem;
+}
+
+.toc-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.toc-list li {
+  margin: 3px 0;
+}
+
+.toc-list a {
+  display: block;
+  text-decoration: none;
+  color: #334155;
+  padding: 6px 8px;
+  border-radius: 8px;
+  font-size: .94rem;
+  line-height: 1.35;
+  transition: background .15s ease, color .15s ease;
+}
+
+.toc-list a:hover,
+.toc-list a.active {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.toc-list a.active {
+  font-weight: 700;
+}
+
+/* ----------------------
+   MAIN CONTENT
+------------------- */
+.content {
+  min-width: 0;
+}
+
+.frontmatter,
+.module,
+.closing-section {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 24px 26px;
+  box-shadow: 0 6px 18px rgba(34,40,49,.05);
+  margin-bottom: 16px;
+}
+
+.frontmatter {
+  border-top: 7px solid var(--accent);
+}
+
+.frontmatter .course-label {
+  text-transform: uppercase;
+  font-size: .9rem;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  color: var(--accent);
+  margin-bottom: 5px;
+}
+
+.frontmatter h1 {
+  margin: 0;
+  font-size: 2rem;
+  line-height: 1.15;
+}
+
+.subtitle {
+  margin: 9px 0 0;
+  color: var(--muted);
+  font-size: 1.06rem;
+}
+
+h2, h3, h4 {
+  scroll-margin-top: 24px;
+}
+
+.module > h2 {
+  margin: 0 0 14px;
+  font-size: 1.55rem;
+  color: var(--accent);
+  line-height: 1.25;
+  border-bottom: 2px solid var(--accent-soft);
+  padding-bottom: 8px;
+}
+
+h3 {
+  margin: 28px 0 10px;
+  font-size: 1.28rem;
+  color: #244f3b;
+}
+
+h4 {
+  margin: 22px 0 8px;
+  font-size: 1.06rem;
+}
+
+p {
+  margin: 0 0 14px;
+}
+
+ul, ol {
+  margin-top: 8px;
+  margin-bottom: 16px;
+}
+
+li { margin-bottom: 7px; }
+
+/* ----------------------
+   INFORMATION BOXES
+------------------- */
+.insight,
+.example-box,
+.note,
+.remember-box {
+  padding: 13px 15px;
+  border-radius: 8px;
+  margin: 16px 0;
+}
+
+.insight {
+  background: var(--accent-soft);
+  border-right: 4px solid var(--accent);
+}
+
+.example-box {
+  background: var(--example-bg);
+  border-left: 4px solid var(--example-line);
+}
+
+.note {
+  background: var(--note-bg);
+  border-left: 4px solid var(--note-line);
+}
+
+.remember-box {
+  background: var(--accent-soft);
+  border-left: 4px solid var(--accent);
+}
+
+.box-title {
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+/* ----------------------
+   TABLES - EXCEL STYLE
+------------------- */
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0 16px;
+  font-size: .96rem;
+  background: #ffffff;
+  border: 1px solid #b7c9be;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+/* Header row */
+th {
+  text-align: left;
+  font-weight: 700;
+  padding: 11px 12px;
+  color: #ffffff;
+  background: #217346; /* Excel green */
+  border: 1px solid #185c37;
+}
+
+/* Regular cells */
+td {
+  padding: 11px 12px;
+  vertical-align: top;
+  border: 1px solid #d5ded9;
+  color: #222222;
+  background: #ffffff;
+}
+
+/* Alternating Excel-style banded rows */
+tbody tr:nth-child(even) td {
+  background: #ededed;
+}
+
+/* Optional hover effect */
+tbody tr:hover td {
+  background: #dceee3;
+}
+
+/* Keep formulas and inline code readable inside tables */
+td .formula,
+th .formula {
+  white-space: nowrap;
+}
+
+/* Slightly emphasize first column when useful */
+tbody td:first-child {
+  font-weight: 500;
+}
+
+/* Responsive tables */
+@media (max-width: 700px) {
+  table {
+    font-size: .9rem;
+  }
+
+  th,
+  td {
+    padding: 9px 8px;
+  }
+}
+/* ----------------------
+   FORMULAS & KEYS
+------------------- */
+.formula {
+  display: inline-block;
+  background: #f1f3f2;
+  border: 1px solid #d4d8d6;
+  border-radius: 5px;
+  padding: 3px 7px;
+  font-family: Consolas, "Courier New", monospace;
+  font-weight: 700;
+  color: #173d2b;
+}
+
+.formula-block {
+  background: var(--code-bg);
+  color: #fff;
+  font-family: Consolas, "Courier New", monospace;
+  padding: 14px 17px;
+  border-radius: 8px;
+  margin: 15px 0;
+  overflow-x: auto;
+}
+
+kbd {
+  display: inline-block;
+  padding: 2px 7px;
+  font-size: .9em;
+  background: #f1f1f1;
+  border: 1px solid #c8c8c8;
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* ----------------------
+   NUMBERED STEPS
+------------------- */
+.steps {
+  counter-reset: step;
+  list-style: none;
+  padding-left: 0;
+}
+
+.steps li {
+  position: relative;
+  margin: 15px 0;
+  padding-left: 46px;
+  min-height: 32px;
+}
+
+.steps li::before {
+  counter-increment: step;
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 30px;
+  height: 30px;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 30px;
+  font-weight: 700;
+}
+
+/* ----------------------
+   FIGURES
+------------------- */
+figure {
+  margin: 22px 0 18px;
+  text-align: center;
+}
+
+figure img {
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #fff;
+}
+
+/* Optional figure sizes */
+figure img.small {
+  max-width: 400px;
+}
+
+figure img.medium {
+  max-width: 650px;
+}
+
+figure img.large {
+  max-width: 900px;
+}
+
+figcaption {
+  margin-top: 9px;
+  font-size: .94rem;
+  color: #44515f;
+  font-style: italic;
+}
+.video-figure video.small {
+  width: 100%;
+  max-width: 400px;
+}
+
+.video-figure video.medium {
+  width: 100%;
+  max-width: 650px;
+}
+
+.video-figure video.large {
+  width: 100%;
+  max-width: 900px;
+}
+/* ----------------------
+   LEARNING CHECKLIST
+------------------- */
+.checklist {
+  background: #fafafa;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 18px 20px;
+}
+
+/* ----------------------
+   RESPONSIVE LAYOUT
+------------------- */
+@media (max-width: 1000px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    position: static;
+    max-height: none;
+  }
+
+  .toc-list {
+    columns: 2;
+    column-gap: 20px;
+  }
+
+  .toc-list li {
+    break-inside: avoid;
+  }
+}
+
+@media (max-width: 650px) {
+  .frontmatter,
+  .module,
+  .closing-section {
+    padding: 20px 18px;
+  }
+
+  .toc-list {
+    columns: 1;
+  }
+
+  .frontmatter h1 {
+    font-size: 1.65rem;
+  }
+}
+</style>
+</head>
+
+<body>
+<div class="layout">
+
+  <aside class="sidebar" aria-label="Table of contents">
+    <h2>Contents</h2>
+    <p>Select a topic to jump directly to that section.</p>
+
+    <ul class="toc-list">
+      <li><a href="#about">About This Reading</a></li>
+      <li><a href="#topic1">1. Single Sort</a></li>
+      <li><a href="#topic2">2. Multi-Level Sort</a></li>
+      <li><a href="#topic4">4. Find Duplicates with Conditional Formatting</a></li>
+      <li><a href="#topic5">5. Removing Duplicates</a></li>
+      <li><a href="#topic6">6. DSUM()</a></li>
+      <li><a href="#topic7">7. DAVERAGE()</a></li>
+      <li><a href="#topic8">8. DCOUNT()</a></li>
+      <li><a href="#topic9">9. SUBTOTAL()</a></li>
+      <li><a href="#learning-check">What You Should Be Able to Do</a></li>
+    </ul>
+  </aside>
+
+
+  <main class="content">
+
+    <section class="frontmatter" id="about">
+      <div class="course-label">Excel for Business Managers</div>
+      <h1>Data Organization and List Management</h1>
+      <p class="subtitle">
+        Sorting lists, identifying duplicate records, querying structured data,
+        and calculating summaries that respond to filters.
+      </p>
+
+      <div class="insight" style="margin-top:20px;">
+        <strong>How to use this reading:</strong>
+        Use the navigation menu to move directly to any topic you want to review.
+        The sections are organized in the same sequence as the Module 5 skills.
+      </div>
+
+      <p>
+        Business datasets often contain many records and many variables. As a list grows,
+        it becomes increasingly important to organize the data systematically rather than
+        relying on visual inspection.
+      </p>
+
+      <p>
+        This module uses a fictional employee database with fields such as
+        <strong>Last Name</strong>, <strong>First Name</strong>,
+        <strong>Department</strong>, <strong>City</strong>, and
+        <strong>Salary</strong>. The same tools can be applied to much larger datasets
+        containing additional fields such as addresses, phone numbers, email addresses,
+        or other business information.
+      </p>
+
+      <h3>Understanding a List or Database</h3>
+
+      <p>
+        In a structured list, each <strong>row</strong> typically represents one record,
+        such as one employee, while each <strong>column</strong> represents a field or
+        variable describing that record.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Last Name</th>
+            <th>First Name</th>
+            <th>Department</th>
+            <th>City</th>
+            <th>Salary</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Jones</td>
+            <td>Maria</td>
+            <td>Accounting</td>
+            <td>Houston</td>
+            <td>$70,000</td>
+          </tr>
+          <tr>
+            <td>Mitchell</td>
+            <td>Patricia</td>
+            <td>Sales</td>
+            <td>Las Vegas</td>
+            <td>$85,000</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+
+    <!-- ================================================= -->
+    <section id="topic1" class="module">
+      <h2>1. Single Sort</h2>
+
+      <p>
+        A <strong>single sort</strong> organizes the entire list using the values
+        in one selected field.
+      </p>
+
+      <h3>Sorting Text</h3>
+
+      <p>
+        Text fields can be sorted alphabetically:
+      </p>
+
+      <ul>
+        <li><strong>A to Z</strong> arranges text in ascending alphabetical order.</li>
+        <li><strong>Z to A</strong> arranges text in descending alphabetical order.</li>
+      </ul>
+
+      <p>
+        For example, selecting a cell in the <strong>Last Name</strong> column and
+        sorting A to Z organizes the employee list alphabetically by last name.
+      </p>
+
+      <h3>Sorting by Another Field</h3>
+
+      <p>
+        The same approach can be used with fields such as Department. Selecting a
+        cell in the Department column and sorting A to Z groups departments
+        alphabetically.
+      </p>
+
+      <h3>Sorting Numbers</h3>
+
+      <p>
+        Numerical fields use equivalent ascending and descending options:
+      </p>
+
+      <ul>
+        <li><strong>Smallest to Largest</strong></li>
+        <li><strong>Largest to Smallest</strong></li>
+      </ul>
+
+      <div class="example-box">
+        <div class="box-title">Example</div>
+        Sorting the Salary field from largest to smallest places the employee with
+        the highest salary at the top of the list and the employee with the lowest
+        salary at the bottom.
+      </div>
+
+      <h3>Perform a Single Sort</h3>
+
+      <ol class="steps">
+        <li>Select a cell in the field you want to use for sorting.</li>
+        <li>Go to the <strong>Home</strong> tab.</li>
+        <li>Select <strong>Sort &amp; Filter</strong>.</li>
+        <li>Choose the appropriate ascending or descending option.</li>
+      </ol>
+
+      <div class="remember-box">
+        <div class="box-title">The Entire Record Must Stay Together</div>
+        Sorting should reorganize complete records. An employee's name, department,
+        city, and salary should remain on the same row after the sort.
+      </div>
+    </section>
+
+
+    <!-- ================================================= -->
+    <section id="topic2" class="module">
+      <h2>2. Multi-Level Sort</h2>
+
+      <p>
+        A <strong>multi-level sort</strong> organizes data using more than one field.
+        One field establishes the primary grouping, and additional fields determine
+        how records are ordered within those groups.
+      </p>
+
+      <h3>Example: Department and Salary</h3>
+
+      <p>
+        Suppose you want employees grouped by Department and, within each department,
+        sorted from highest salary to lowest salary.
+      </p>
+
+      <p>The sorting logic is:</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Sort Level</th>
+            <th>Field</th>
+            <th>Order</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>Department</td>
+            <td>A to Z</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>Salary</td>
+            <td>Largest to Smallest</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>
+        The result keeps all employees from the same department together, then
+        ranks salaries within each department.
+      </p>
+
+      <h3>Create a Multi-Level Sort</h3>
+
+      <ol class="steps">
+        <li>Select a cell somewhere inside the dataset.</li>
+        <li>Open <strong>Sort &amp; Filter</strong>.</li>
+        <li>Select <strong>Custom Sort</strong>.</li>
+        <li>Choose the primary field and its sort order.</li>
+        <li>Select <strong>Add Level</strong>.</li>
+        <li>Choose the second field and its sort order.</li>
+        <li>Select <strong>OK</strong>.</li>
+      </ol>
+
+      <div class="insight">
+        <strong>Why multi-level sorts are useful:</strong>
+        They allow managers to organize records into meaningful groups while still
+        ranking or arranging records within each group.
+      </div>
+    </section>
+
+
+    <!-- ================================================= -->
+    <section id="topic4" class="module">
+      <h2>4. Find Duplicates with Conditional Formatting</h2>
+
+      <p>
+        Duplicate records are difficult to identify visually when a dataset contains
+        many rows. Conditional formatting can help locate repeated values.
+      </p>
+
+      <h3>Highlight Duplicate Values</h3>
+
+      <ol class="steps">
+        <li>Select the cells you want to evaluate for duplicates.</li>
+        <li>Go to <strong>Home &gt; Conditional Formatting</strong>.</li>
+        <li>Select <strong>Highlight Cells Rules</strong>.</li>
+        <li>Select <strong>Duplicate Values</strong>.</li>
+        <li>Choose a formatting option, such as a red highlight.</li>
+      </ol>
+
+      <h3>Duplicate Values Do Not Always Mean Duplicate Records</h3>
+
+      <p>
+        A repeated last name does not necessarily mean that the same employee appears
+        twice. Two different employees may share a common surname.
+      </p>
+
+      <div class="example-box">
+        <div class="box-title">Example</div>
+        Maria Jones and Paul Jones share the same last name, but they represent two
+        different employees. A repeated combination such as
+        <strong>Patricia Mitchell</strong> appearing twice with the same department,
+        city, and salary is a stronger indication of a duplicate record.
+      </div>
+
+      <div class="remember-box">
+        <div class="box-title">Review the Full Record</div>
+        Conditional formatting identifies repeated values. Use the other fields in
+        the record to determine whether the repetition represents an actual duplicate.
+      </div>
+    </section>
+
+
+    <!-- ================================================= -->
+    <section id="topic5" class="module">
+      <h2>5. Removing Duplicates</h2>
+
+      <p>
+        After identifying a true duplicate, Excel can remove repeated records with
+        the <strong>Remove Duplicates</strong> command.
+      </p>
+
+      <h3>Remove Duplicate Records</h3>
+
+      <ol class="steps">
+        <li>Select a cell somewhere inside the dataset.</li>
+        <li>Go to the <strong>Data</strong> tab.</li>
+        <li>Select <strong>Remove Duplicates</strong>.</li>
+        <li>Confirm whether the list has headers.</li>
+        <li>Choose the fields Excel should use to identify duplicate records.</li>
+        <li>Select <strong>OK</strong>.</li>
+      </ol>
+
+      <p>
+        Excel reports how many duplicate values were removed and how many unique
+        values remain.
+      </p>
+
+      <div class="note">
+        <div class="box-title">Before Removing Duplicates</div>
+        Make sure repeated records are actually errors. Similar names or repeated
+        values in one field do not necessarily mean that an entire record is duplicated.
+      </div>
+    </section>
+
+
+    <!-- ================================================= -->
+    <section id="topic6" class="module">
+      <h2>6. DSUM()</h2>
+
+      <p>
+        The <strong>DSUM</strong> function adds values in a database field only
+        for records that meet specified criteria.
+      </p>
+
+      <h3>DSUM Syntax</h3>
+
+      <div class="formula-block">=DSUM(database, field, criteria)</div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Argument</th>
+            <th>Meaning</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>database</td>
+            <td>The complete data range, including the field names.</td>
+          </tr>
+          <tr>
+            <td>field</td>
+            <td>The column containing the values you want to sum.</td>
+          </tr>
+          <tr>
+            <td>criteria</td>
+            <td>A separate range containing field names and the conditions records must meet.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Specifying the Field</h3>
+
+      <p>
+        The field can be identified by its name in quotation marks or by its numerical
+        position within the database.
+      </p>
+
+      <div class="formula-block">=DSUM(database,"Salary",criteria)</div>
+
+      <p>or, if Salary is the fifth field:</p>
+
+      <div class="formula-block">=DSUM(database,5,criteria)</div>
+
+      <h3>Using a Criteria Range</h3>
+
+      <p>
+        A criteria area repeats the relevant field names and places the desired
+        conditions directly beneath them.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Department</th>
+            <th>City</th>
+            <th>Salary</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td></td>
+            <td>Houston</td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>
+        With City set to Houston, DSUM returns the combined salary for employees
+        whose records meet that criterion.
+      </p>
+
+      <div class="example-box">
+        <div class="box-title">Other Criteria</div>
+        The criteria can be changed to evaluate records for a different city,
+        a department such as Human Resources, or another condition represented
+        in the database.
+      </div>
+    </section>
+
+
+    <!-- ================================================= -->
+    <section id="topic7" class="module">
+      <h2>7. DAVERAGE()</h2>
+
+      <p>
+        The <strong>DAVERAGE</strong> function calculates the average of values
+        in a database field for records that meet specified criteria.
+      </p>
+
+      <h3>DAVERAGE Syntax</h3>
+
+      <div class="formula-block">=DAVERAGE(database, field, criteria)</div>
+
+      <p>
+        Like DSUM, DAVERAGE requires a database range, the field to analyze,
+        and a criteria range.
+      </p>
+
+      <div class="example-box">
+        <div class="box-title">Example</div>
+        If Salary is the fifth field, a formula could use:
+        <div class="formula-block">=DAVERAGE(database,5,criteria)</div>
+        If the criteria specify Atlanta, the result is the average salary for
+        the records that meet the Atlanta criterion.
+      </div>
+
+      <h3>Criteria Can Be Changed Without Rewriting the Formula</h3>
+
+      <p>
+        Because the formula refers to a criteria range, changing the value in that
+        range can update DSUM, DAVERAGE, and other database functions at the same time.
+      </p>
+
+      <div class="insight">
+        <strong>Database-query approach:</strong>
+        Database functions allow you to build a small analysis area in which the
+        criteria can be changed to answer different questions from the same dataset.
+      </div>
+    </section>
+
+
+    <!-- ================================================= -->
+    <section id="topic8" class="module">
+      <h2>8. DCOUNT()</h2>
+
+      <p>
+        The <strong>DCOUNT</strong> function counts numerical records in a selected
+        database field that meet the specified criteria.
+      </p>
+
+      <h3>DCOUNT Syntax</h3>
+
+      <div class="formula-block">=DCOUNT(database, field, criteria)</div>
+
+      <div class="example-box">
+        <div class="box-title">Example: Salary Greater Than $50,000</div>
+        A Salary criterion can be written as:
+        <div class="formula-block">&gt;50000</div>
+        DCOUNT then returns the number of salary records that meet the condition.
+      </div>
+
+      <h3>Using Multiple Criteria</h3>
+
+      <p>
+        More than one condition can be included in the criteria area. For example,
+        the database can be queried for employees who:
+      </p>
+
+      <ul>
+        <li>work in Houston, and</li>
+        <li>have a salary greater than $60,000.</li>
+      </ul>
+
+      <table>
+        <thead>
+          <tr>
+            <th>City</th>
+            <th>Salary</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Houston</td>
+            <td>&gt;60000</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>
+        DSUM, DAVERAGE, and DCOUNT can all use the same criteria area to return
+        different summaries of the records that meet those conditions.
+      </p>
+    </section>
+
+
+    <!-- ================================================= -->
+    <section id="topic9" class="module">
+      <h2>9. SUBTOTAL()</h2>
+
+      <p>
+        The <strong>SUBTOTAL</strong> function performs a summary calculation on a
+        range and is particularly useful when the dataset is filtered.
+      </p>
+
+      <h3>SUBTOTAL Syntax</h3>
+
+      <div class="formula-block">=SUBTOTAL(function_num, ref1)</div>
+
+      <p>
+        The first argument tells Excel which calculation to perform. The second
+        argument identifies the range to summarize.
+      </p>
+
+      <h3>Function Numbers Used in This Module</h3>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Function Number</th>
+            <th>Calculation</th>
+            <th>Example</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>AVERAGE</td>
+            <td><span class="formula">=SUBTOTAL(1,E2:E19)</span></td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>MAX</td>
+            <td><span class="formula">=SUBTOTAL(4,E2:E19)</span></td>
+          </tr>
+          <tr>
+            <td>9</td>
+            <td>SUM</td>
+            <td><span class="formula">=SUBTOTAL(9,E2:E19)</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Using SUBTOTAL with Filters</h3>
+
+      <p>
+        Filtering allows you to display selected records while excluding other
+        records from the current view. SUBTOTAL can then summarize the visible
+        records.
+      </p>
+
+      <ol class="steps">
+        <li>Select a cell inside the dataset.</li>
+        <li>Go to the <strong>Data</strong> tab.</li>
+        <li>Turn on <strong>Filter</strong>.</li>
+        <li>Use the drop-down controls in the field headers to select records.</li>
+        <li>Review the SUBTOTAL result for the filtered data.</li>
+      </ol>
+
+      <div class="example-box">
+        <div class="box-title">Example</div>
+        If the City filter is set to Houston, a salary SUBTOTAL can display the
+        sum or average for the Houston records. Changing the filter to Las Vegas
+        or Atlanta updates the result.
+      </div>
+
+      <h3>Filtering by More Than One Field</h3>
+
+      <p>
+        Filters can be combined. For example, you can display only employees who
+        work in a particular city and department, then use SUBTOTAL to summarize
+        the visible salary values.
+      </p>
+
+      <div class="remember-box">
+        <div class="box-title">Keep the Summary Visible</div>
+        Place SUBTOTAL calculations outside or below the main list so the summary
+        remains easy to see while different filters are applied.
+      </div>
+
+      <div class="insight">
+        <strong>Why SUBTOTAL is powerful:</strong>
+        It combines filtering with common calculations such as SUM, AVERAGE, and MAX,
+        allowing you to quickly drill down into different portions of a dataset.
+      </div>
+    </section>
+
+
+    <!-- ================================================= -->
+    <section id="learning-check" class="closing-section">
+      <h2 style="margin-top:0;color:var(--accent);">What You Should Be Able to Do</h2>
+
+      <div class="checklist">
+        <p><strong>After completing this module, you should be able to:</strong></p>
+        <ul>
+          <li>Explain how rows and columns are used to structure a list or database.</li>
+          <li>Sort text fields from A to Z or Z to A.</li>
+          <li>Sort numerical fields from smallest to largest or largest to smallest.</li>
+          <li>Create a multi-level custom sort.</li>
+          <li>Use conditional formatting to identify duplicate values.</li>
+          <li>Distinguish repeated values from true duplicate records.</li>
+          <li>Remove duplicate records with the Remove Duplicates command.</li>
+          <li>Explain the database, field, and criteria arguments used by database functions.</li>
+          <li>Use DSUM() to total records that meet specified criteria.</li>
+          <li>Use DAVERAGE() to calculate the average for records that meet specified criteria.</li>
+          <li>Use DCOUNT() to count numerical records that meet specified criteria.</li>
+          <li>Use multiple conditions in a criteria range.</li>
+          <li>Use filters to display selected records.</li>
+          <li>Use SUBTOTAL() to calculate SUM, AVERAGE, and MAX for filtered data.</li>
+        </ul>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const links = Array.from(document.querySelectorAll(".sidebar a[href^='#']"));
+  const sections = links
+    .map(link => document.querySelector(link.getAttribute("href")))
+    .filter(Boolean);
+
+  const observer = new IntersectionObserver((entries) => {
+    const visible = entries
+      .filter(entry => entry.isIntersecting)
+      .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+
+    if (!visible.length) return;
+
+    const id = visible[0].target.id;
+    links.forEach(link => {
+      link.classList.toggle("active", link.getAttribute("href") === "#" + id);
+    });
+  }, {
+    rootMargin: "-18% 0px -72% 0px",
+    threshold: 0
+  });
+
+  sections.forEach(section => observer.observe(section));
+});
+</script>
+
+</body>
+</html>
+
+
