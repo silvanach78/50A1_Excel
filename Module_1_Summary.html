@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Excel Fundamentals | Excel for Business Managers</title>
+
+<style>
+:root {
+  --bg: #f7f8fa;
+  --panel: #ffffff;
+  --ink: #222831;
+  --muted: #5c6773;
+  --line: #d7dde5;
+  --accent: #1f6f4a;
+  --accent-soft: #e9f5ef;
+  --accent-mid: #bfe3d2;
+  --note-bg: #fff7e8;
+  --note-line: #e6cf95;
+  --example-bg: #f3f8fb;
+  --example-line: #4f89a6;
+  --code-bg: #202522;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+  line-height: 1.65;
+}
+
+a { color: #0b5ea8; }
+
+/* ----------------------
+   PAGE LAYOUT
+------------------- */
+.layout {
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr);
+  gap: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 6px;
+}
+
+/* ----------------------
+   STICKY LEFT NAVIGATION
+------------------- */
+.sidebar {
+  position: sticky;
+  top: 6px;
+  align-self: start;
+  max-height: calc(100vh - 12px);
+  overflow-y: auto;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 18px 18px 16px;
+  box-shadow: 0 6px 20px rgba(34,40,49,.06);
+}
+
+.sidebar h2 {
+  margin: 0 0 6px;
+  font-size: 1.45rem;
+  color: var(--accent);
+}
+
+.sidebar p {
+  margin: 0 0 14px;
+  color: var(--muted);
+  font-size: .92rem;
+}
+
+.toc-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.toc-list li {
+  margin: 3px 0;
+}
+
+.toc-list a {
+  display: block;
+  text-decoration: none;
+  color: #334155;
+  padding: 6px 8px;
+  border-radius: 8px;
+  font-size: .94rem;
+  line-height: 1.35;
+  transition: background .15s ease, color .15s ease;
+}
+
+.toc-list a:hover,
+.toc-list a.active {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.toc-list a.active {
+  font-weight: 700;
+}
+
+/* ----------------------
+   MAIN CONTENT
+------------------- */
+.content {
+  min-width: 0;
+}
+
+.frontmatter,
+.module,
+.closing-section {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 24px 26px;
+  box-shadow: 0 6px 18px rgba(34,40,49,.05);
+  margin-bottom: 16px;
+}
+
+.frontmatter {
+  border-top: 7px solid var(--accent);
+}
+
+.frontmatter .course-label {
+  text-transform: uppercase;
+  font-size: .9rem;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  color: var(--accent);
+  margin-bottom: 5px;
+}
+
+.frontmatter h1 {
+  margin: 0;
+  font-size: 2rem;
+  line-height: 1.15;
+}
+
+.subtitle {
+  margin: 9px 0 0;
+  color: var(--muted);
+  font-size: 1.06rem;
+}
+
+h2, h3, h4 {
+  scroll-margin-top: 24px;
+}
+
+.module > h2 {
+  margin: 0 0 14px;
+  font-size: 1.55rem;
+  color: var(--accent);
+  line-height: 1.25;
+  border-bottom: 2px solid var(--accent-soft);
+  padding-bottom: 8px;
+}
+
+h3 {
+  margin: 28px 0 10px;
+  font-size: 1.28rem;
+  color: #244f3b;
+}
+
+h4 {
+  margin: 22px 0 8px;
+  font-size: 1.06rem;
+}
+
+p {
+  margin: 0 0 14px;
+}
+
+ul, ol {
+  margin-top: 8px;
+  margin-bottom: 16px;
+}
+
+li { margin-bottom: 7px; }
+
+/* ----------------------
+   INFORMATION BOXES
+------------------- */
+.insight,
+.example-box,
+.note,
+.remember-box {
+  padding: 13px 15px;
+  border-radius: 8px;
+  margin: 16px 0;
+}
+
+.insight {
+  background: var(--accent-soft);
+  border-right: 4px solid var(--accent);
+}
+
+.example-box {
+  background: var(--example-bg);
+  border-left: 4px solid var(--example-line);
+}
+
+.note {
+  background: var(--note-bg);
+  border-left: 4px solid var(--note-line);
+}
+
+.remember-box {
+  background: var(--accent-soft);
+  border-left: 4px solid var(--accent);
+}
+
+.box-title {
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+/* ----------------------
+   TABLES - EXCEL STYLE
+------------------- */
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0 16px;
+  font-size: .96rem;
+  background: #ffffff;
+  border: 1px solid #b7c9be;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+/* Header row */
+th {
+  text-align: left;
+  font-weight: 700;
+  padding: 11px 12px;
+  color: #ffffff;
+  background: #217346; /* Excel green */
+  border: 1px solid #185c37;
+}
+
+/* Regular cells */
+td {
+  padding: 11px 12px;
+  vertical-align: top;
+  border: 1px solid #d5ded9;
+  color: #222222;
+  background: #ffffff;
+}
+
+/* Alternating Excel-style banded rows */
+tbody tr:nth-child(even) td {
+  background: #ededed;
+}
+
+/* Optional hover effect */
+tbody tr:hover td {
+  background: #dceee3;
+}
+
+/* Keep formulas and inline code readable inside tables */
+td .formula,
+th .formula {
+  white-space: nowrap;
+}
+
+/* Slightly emphasize first column when useful */
+tbody td:first-child {
+  font-weight: 500;
+}
+
+/* Responsive tables */
+@media (max-width: 700px) {
+  table {
+    font-size: .9rem;
+  }
+
+  th,
+  td {
+    padding: 9px 8px;
+  }
+}
+/* ----------------------
+   FORMULAS & KEYS
+------------------- */
+.formula {
+  display: inline-block;
+  background: #f1f3f2;
+  border: 1px solid #d4d8d6;
+  border-radius: 5px;
+  padding: 3px 7px;
+  font-family: Consolas, "Courier New", monospace;
+  font-weight: 700;
+  color: #173d2b;
+}
+
+.formula-block {
+  background: var(--code-bg);
+  color: #fff;
+  font-family: Consolas, "Courier New", monospace;
+  padding: 14px 17px;
+  border-radius: 8px;
+  margin: 15px 0;
+  overflow-x: auto;
+}
+
+kbd {
+  display: inline-block;
+  padding: 2px 7px;
+  font-size: .9em;
+  background: #f1f1f1;
+  border: 1px solid #c8c8c8;
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* ----------------------
+   NUMBERED STEPS
+------------------- */
+.steps {
+  counter-reset: step;
+  list-style: none;
+  padding-left: 0;
+}
+
+.steps li {
+  position: relative;
+  margin: 15px 0;
+  padding-left: 46px;
+  min-height: 32px;
+}
+
+.steps li::before {
+  counter-increment: step;
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 30px;
+  height: 30px;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 30px;
+  font-weight: 700;
+}
+
+/* ----------------------
+   FIGURES
+------------------- */
+figure {
+  margin: 22px 0 18px;
+  text-align: center;
+}
+
+figure img {
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #fff;
+}
+
+/* Optional figure sizes */
+figure img.small {
+  max-width: 400px;
+}
+
+figure img.medium {
+  max-width: 650px;
+}
+
+figure img.large {
+  max-width: 900px;
+}
+
+figcaption {
+  margin-top: 9px;
+  font-size: .94rem;
+  color: #44515f;
+  font-style: italic;
+}
+.video-figure video.small {
+  width: 100%;
+  max-width: 400px;
+}
+
+.video-figure video.medium {
+  width: 100%;
+  max-width: 650px;
+}
+
+.video-figure video.large {
+  width: 100%;
+  max-width: 900px;
+}
+/* ----------------------
+   LEARNING CHECKLIST
+------------------- */
+.checklist {
+  background: #fafafa;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 18px 20px;
+}
+
+/* ----------------------
+   RESPONSIVE LAYOUT
+------------------- */
+@media (max-width: 1000px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    position: static;
+    max-height: none;
+  }
+
+  .toc-list {
+    columns: 2;
+    column-gap: 20px;
+  }
+
+  .toc-list li {
+    break-inside: avoid;
+  }
+}
+
+@media (max-width: 650px) {
+  .frontmatter,
+  .module,
+  .closing-section {
+    padding: 20px 18px;
+  }
+
+  .toc-list {
+    columns: 1;
+  }
+
+  .frontmatter h1 {
+    font-size: 1.65rem;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="layout">
+
+  <!-- =================
+       LEFT NAVIGATION
+ =================== -->
+  <aside class="sidebar" aria-label="Table of contents">
+    <h2>Contents</h2>
+    <p>Select a topic to jump directly to that section.</p>
+
+    <ul class="toc-list">
+      <li><a href="#about">About This Reading</a></li>
+      <li><a href="#topic1">1. Cells, Columns, and Rows</a></li>
+      <li><a href="#topic2">2. Zoom</a></li>
+      <li><a href="#topic3">3. Entering Data</a></li>
+      <li><a href="#topic4">4. Flash Fill and AutoFill</a></li>
+      <li><a href="#topic5">5. Formatting Cells</a></li>
+      <li><a href="#topic6">6. AutoFit Contents</a></li>
+      <li><a href="#topic7">7. Hide and Unhide Columns</a></li>
+      <li><a href="#topic8">8. Moving Columns and Cells</a></li>
+      <li><a href="#topic9">9. Insert Table</a></li>
+      <li><a href="#topic10">10. Insert Columns and Rows</a></li>
+      <li><a href="#topic11">11. SUM()</a></li>
+      <li><a href="#topic12">12. Basic Math Formulas</a></li>
+      <li><a href="#learning-check">What You Should Be Able to Do</a></li>
+    </ul>
+  </aside>
+
+
+  <!-- =================
+       MAIN READING
+ =================== -->
+  <main class="content">
+
+    <section class="frontmatter" id="about">
+      <div class="course-label">Excel for Business Managers</div>
+      <h1>Excel Fundamentals</h1>
+      <p class="subtitle">
+        A companion reading for the introductory lecture on navigating Excel,
+        organizing data, formatting worksheets, using tables, and performing
+        basic calculations.
+      </p>
+
+      <div class="insight" style="margin-top:20px;">
+        <strong>How to use this reading:</strong>
+        Use the navigation menu to move directly to any topic you want to review.
+        This document follows the same topic order as the accompanying video lecture.
+      </div>
+
+      <p>
+        Microsoft Excel is much more than a place to enter numbers. It is a
+        business tool for organizing information, performing calculations,
+        identifying patterns, summarizing data, and supporting managerial
+        decision-making.
+      </p>
+
+      <p>
+        You do not need to memorize every command presented here. The goal is to
+        become comfortable navigating Excel and to understand how its tools can
+        help you work more efficiently.
+      </p>
+    </section>
+
+
+    <!-- ================================================= -->
+    <section id="topic1" class="module">
+      <h2>1. Cells, Columns, and Rows</h2>
+
+      <p>
+        An Excel file is called a <strong>workbook</strong>. A workbook can
+        contain one or more <strong>worksheets</strong>.
+      </p>
+
+      <p>
+        Worksheets are organized into <strong>columns</strong>,
+        <strong>rows</strong>, and <strong>cells</strong>.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Excel Element</th>
+            <th>What It Does</th>
+            <th>How It Is Identified</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Column</strong></td>
+            <td>Runs vertically, from top to bottom.</td>
+            <td>Letters: A, B, C, D...</td>
+          </tr>
+          <tr>
+            <td><strong>Row</strong></td>
+            <td>Runs horizontally, from left to right.</td>
+            <td>Numbers: 1, 2, 3, 4...</td>
+          </tr>
+          <tr>
+            <td><strong>Cell</strong></td>
+            <td>The intersection of a column and a row.</td>
+            <td>Column letter + row number</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="example-box">
+        <div class="box-title">Example</div>
+        The cell located in <strong>Column D</strong> and
+        <strong>Row 5</strong> is called <strong>D5</strong>.
+      </div>
+
+      <h3>The Name Box</h3>
+      <p>
+        The <strong>Name Box</strong>, located near the upper-left area of Excel,
+        displays the reference of the currently selected cell. If you click D5,
+        for example, the Name Box displays <strong>D5</strong>.
+      </p>
+
+      <h3>The Formula Bar</h3>
+      <p>
+        The <strong>Formula Bar</strong> shows the actual contents of the selected
+        cell. Those contents may be text, a number, a date, or a formula.
+      </p>
+
+      <figure>
+        <img class="medium"  src="https://raw.githubusercontent.com/silvanach78/50A1_Excel/main/Spreadsheet_basics.png"
+             alt="Microsoft Excel worksheet showing the basic spreadsheet interface. Red arrows identify the Name Box, Formula Bar, columns, rows, and cell D5. The Name Box displays D5, and cell D5 is selected at the intersection of column D and row 5.">
+        <figcaption>
+          Figure 1. Basic Excel worksheet interface showing the Name Box, Formula Bar, columns, rows, and cell D5.
+        </figcaption>
+      </figure>
+    </section>
+    <!--============= -->
+    <section id="topic2" class="module">
+      <h2>2. Zoom</h2>
+
+      <p>
+        The <strong>Zoom</strong> control is normally located in the lower-right
+        corner of the Excel window.
+      </p>
+
+      <p>
+        Zooming changes only how large the worksheet appears on your screen.
+        It does not change your data or the actual size of the cells.
+      </p>
+
+      <div class="note">
+        <div class="box-title">Manager Tip</div>
+        Zoom in when you need to examine a small section of a worksheet.
+        Zoom out when you are working with a large dataset and need a broader view.
+      </div>
+    </section>
+
+
+    <!-- ============= -->
+    <section id="topic3" class="module">
+      <h2>3. Entering Data</h2>
+
+      <p>
+        To enter data, select a cell and begin typing. Press <kbd>Enter</kbd>
+        when you are finished.
+      </p>
+
+      <p>
+        In the lecture example, we create a small dataset containing monthly
+        cookie sales.
+      </p>
+
+      <h3>Column Headers</h3>
+      <p>
+        The first row of a dataset commonly contains <strong>headers</strong>.
+        Headers identify what each column represents.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Cookie Sales</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Jan-23</td><td>1300</td></tr>
+          <tr><td>Feb-23</td><td>4000</td></tr>
+          <tr><td>Mar-23</td><td>5000</td></tr>
+        </tbody>
+      </table>
+
+      <h3>How Excel Stores Dates</h3>
+      <p>
+        Excel may display a date differently from the way you originally entered it.
+        For example, you might enter <strong>January 2023</strong> and see
+        <strong>Jan-23</strong> displayed in the cell. The Formula Bar may show a
+        complete date such as January 1, 2023.
+      </p>
+
+      <div class="remember-box">
+        <div class="box-title">Remember</div>
+        What you see in a cell is not always exactly the same as the value Excel stores.
+        The Formula Bar can help you see the underlying value.
+      </div>
+    </section>
+
+
+    <!-- ============= -->
+    <section id="topic4" class="module">
+      <h2>4. Flash Fill and AutoFill</h2>
+
+      <p>
+        Excel can recognize patterns and use them to help you enter data more
+        efficiently. Two useful features are <strong>AutoFill</strong> and
+        <strong>Flash Fill</strong>.
+      </p>
+
+      <div class="insight">
+        <strong>Important distinction:</strong> Although both features recognize
+        patterns, AutoFill and Flash Fill perform different tasks.
+      </div>
+
+      <h3>AutoFill and the Fill Handle</h3>
+
+      <p>
+        <strong>AutoFill</strong> extends an existing value, sequence, or formula.
+        It is commonly used for dates, months, days of the week, numbers, and formulas.
+      </p>
+
+      <p>
+        The <strong>fill handle</strong> is the small square that appears in the
+        lower-right corner of a selected cell.
+      </p>
+
+      <h4>Example: Filling Months</h4>
+
+      <ol class="steps">
+        <li>Enter <strong>January</strong> in a cell.</li>
+        <li>Select the cell.</li>
+        <li>Point to the fill handle in the lower-right corner.</li>
+        <li>Click and drag downward.</li>
+        <li>Excel continues the sequence with February, March, April, and the remaining months.</li>
+      </ol>
+
+      <p>AutoFill can recognize sequences such as:</p>
+
+      <ul>
+        <li>January, February, March...</li>
+        <li>Sunday, Monday, Tuesday...</li>
+        <li>Sequential dates</li>
+        <li>Number patterns</li>
+        <li>Repeated or copied formulas</li>
+      </ul>
+
+      <h3>Flash Fill</h3>
+
+      <p>
+        <strong>Flash Fill</strong> recognizes a pattern that you establish by
+        transforming existing data and uses that pattern to complete the remaining
+        values. Flash Fill is particularly useful when working with text.
+      </p>
+
+      <h4>Example: Combining First and Last Names</h4>
+
+      <p>
+        Suppose Column A contains first names and Column B contains last names.
+        You want Column C to contain each person's full name.
+      </p>
+
+      <ol class="steps">
+        <li>
+          In the first available cell in Column C, type the first person's full name
+          exactly as you want it to appear and press <kbd>Enter</kbd>.
+        </li>
+        <li>Begin typing the next person's full name in the next row.</li>
+        <li>Excel may recognize the pattern and display a preview of the remaining names.</li>
+        <li>If the preview is correct, press <kbd>Enter</kbd> to accept it.</li>
+      </ol>
+
+<figure class="video-figure">
+  <video class="medium" controls preload="metadata">
+    <source
+      src="https://raw.githubusercontent.com/silvanach78/50A1_Excel/main/Flash%20fill%20function.mp4"
+      type="video/mp4">
+    Your browser does not support the HTML5 video element.
+  </video>
+
+  <figcaption>
+    Figure 2. Flash Fill recognizes an established pattern and uses it
+    to complete the remaining values.
+  </figcaption>
+</figure>
+
+
+      <div class="note">
+        <div class="box-title">When Flash Fill Is Useful</div>
+        Flash Fill can help you combine names, separate text, extract parts of codes
+        or identifiers, and reformat text based on a pattern.
+      </div>
+    </section>
+
+
+    <!-- ================================================= -->
+    <section id="topic5" class="module">
+      <h2>5. Formatting Cells</h2>
+
+      <p>
+        Excel allows you to change how information appears without changing the
+        underlying value stored in the cell.
+      </p>
+
+      <h3>Formatting Numbers as Currency</h3>
+
+      <p>
+        If a worksheet contains sales data, displaying the values as currency makes
+        the information easier to interpret.
+      </p>
+
+      <p>For example, Excel may store the value:</p>
+
+      <div class="formula-block">79300</div>
+
+      <p>but display it as:</p>
+
+      <div class="formula-block">$79,300.00</div>
+
+      <h4>Apply Currency Formatting</h4>
+
+      <ol class="steps">
+        <li>Select the cells containing monetary values.</li>
+        <li>Go to the <strong>Home</strong> tab.</li>
+        <li>
+          Select the appropriate Currency or Accounting Number Format command
+          in the Number group.
+        </li>
+      </ol>
+
+      <div class="remember-box">
+        <div class="box-title">Formatting Does Not Change the Value</div>
+        Number formatting changes how Excel displays a value. It does not change the
+        value used in calculations.
+      </div>
+    </section>
+
+
+    <!-- ================================================= -->
+    <section id="topic6" class="module">
+      <h2>6. AutoFit Contents</h2>
+
+      <p>
+        Sometimes the contents of a cell are wider than the column containing them.
+        Excel's <strong>AutoFit</strong> feature automatically adjusts the width of
+        a column to fit its contents.
+      </p>
+
+      <ol class="steps">
+        <li>Move your pointer to the boundary between two column headings.</li>
+        <li>When the resize pointer appears, double-click the boundary.</li>
+        <li>Excel automatically adjusts the column width.</li>
+      </ol>
+
+      <h3>AutoFit Multiple Columns</h3>
+
+      <p>
+        If several columns need to be resized, select all of the relevant columns
+        first and then use AutoFit. You can also select the entire worksheet and
+        AutoFit all columns based on their contents.
+      </p>
+
+      <div class="note">
+        <div class="box-title">Manager Tip</div>
+        AutoFit is a quick way to improve readability before sharing a worksheet
+        with someone else.
+      </div>
+    </section>
+
+
+    <!-- ================================================= -->
+    <section id="topic7" class="module">
+      <h2>7. Hide and Unhide Columns</h2>
+
+      <p>
+        Sometimes a worksheet contains useful information that does not need to be
+        visible all the time. Instead of deleting that information, you can
+        temporarily <strong>hide</strong> the column.
+      </p>
+
+      <h3>Hide a Column</h3>
+      <ol class="steps">
+        <li>Select the column.</li>
+        <li>Right-click the selected column.</li>
+        <li>Choose <strong>Hide</strong>.</li>
+      </ol>
+
+      <h3>Unhide a Column</h3>
+      <ol class="steps">
+        <li>Select the columns on both sides of the hidden column.</li>
+        <li>Right-click the selection.</li>
+        <li>Choose <strong>Unhide</strong>.</li>
+      </ol>
+
+      <div class="remember-box">
+        <div class="box-title">Hide Is Not Delete</div>
+        Hiding a column leaves the data in the workbook. Deleting a column removes
+        the data.
+      </div>
+    </section>
+
+
+    <!-- ================================================= -->
+    <section id="topic8" class="module">
+      <h2>8. Moving Columns and Cells</h2>
+
+      <p>
+        You can move cells or entire columns to reorganize a worksheet.
+      </p>
+
+      <p>In the lecture example, the worksheet was initially organized as:</p>
+      <p><strong>Cookie Sales | Date</strong></p>
+
+      <p>It was reorganized as:</p>
+      <p><strong>Date | Cookie Sales</strong></p>
+
+      <p>
+        This arrangement provides the context first and the corresponding numerical
+        value second.
+      </p>
+
+      <h3>Selecting an Entire Column</h3>
+
+      <p>
+        Click the letter at the top of the column to select the entire column.
+        Once selected, the column can be moved to a different location in the worksheet.
+      </p>
+
+      <div class="note">
+        <div class="box-title">Manager Tip</div>
+        Think about how someone else will read your worksheet. Good Excel design is
+        not only about getting the calculation right. The information should also be
+        easy to understand.
+      </div>
+    </section>
+
+
+    <!-- ================================================= -->
+    <section id="topic9" class="module">
+      <h2>9. Insert Table</h2>
+
+      <p>
+        An Excel <strong>Table</strong> is more than a group of formatted cells.
+        Converting a range into a Table adds tools that make organizing, sorting,
+        filtering, and expanding data easier.
+      </p>
+
+      <h3>Create an Excel Table</h3>
+
+      <ol class="steps">
+        <li>Select the dataset.</li>
+        <li>Go to the <strong>Insert</strong> tab.</li>
+        <li>Select <strong>Table</strong>.</li>
+        <li>Verify that Excel identified the correct data range.</li>
+        <li>
+          If the first row contains headers, select
+          <strong>My table has headers</strong>.
+        </li>
+        <li>Select <strong>OK</strong>.</li>
+      </ol>
+
+      <h3>Sorting and Filtering</h3>
+
+      <p>
+        Once the data has been converted to a Table, drop-down controls appear in
+        the header row. These controls allow you to:
+      </p>
+
+      <ul>
+        <li>Sort data</li>
+        <li>Filter values</li>
+        <li>Display selected categories</li>
+        <li>Focus on particular dates, months, years, or other values</li>
+      </ul>
+
+      <div class="example-box">
+        <div class="box-title">Business Example</div>
+        If your table contains several years of monthly sales data, you could filter
+        the Date column to display only one year without deleting any of the other records.
+      </div>
+    </section>
+
+
+    <!-- ================================================= -->
+    <section id="topic10" class="module">
+      <h2>10. Insert Columns and Rows</h2>
+
+      <p>
+        You can insert new rows or columns when additional data needs to be added
+        to an existing worksheet.
+      </p>
+
+      <h3>Insert a Row</h3>
+
+      <p>
+        In the lecture example, the dataset contains January through November,
+        followed by a Total row. December needs to be inserted before the total.
+      </p>
+
+      <ol class="steps">
+        <li>Select the row containing the current total.</li>
+        <li>Right-click the row number.</li>
+        <li>Choose <strong>Insert</strong>.</li>
+        <li>Enter the December information in the new row.</li>
+      </ol>
+
+      <h3>Insert a Column</h3>
+
+      <p>
+        Columns can be inserted in a similar way when you need to add another
+        field or variable to the dataset.
+      </p>
+
+      <ol class="steps">
+        <li>Select the column immediately to the right of where the new column should appear.</li>
+        <li>Right-click the column heading.</li>
+        <li>Select <strong>Insert</strong>.</li>
+      </ol>
+
+      <div class="remember-box">
+        <div class="box-title">Why This Matters</div>
+        A properly constructed worksheet can often adjust formulas automatically
+        when new rows or data are inserted.
+      </div>
+    </section>
+
+
+    <!-- ================================================= -->
+    <section id="topic11" class="module">
+      <h2>11. SUM()</h2>
+
+      <p>
+        The <strong>SUM</strong> function adds numerical values.
+      </p>
+
+      <h3>Basic Syntax</h3>
+
+      <div class="formula-block">=SUM(B2:B12)</div>
+
+      <p>In this formula:</p>
+
+      <ul>
+        <li><span class="formula">=</span> tells Excel that a formula follows.</li>
+        <li><span class="formula">SUM</span> identifies the function.</li>
+        <li><span class="formula">B2:B12</span> identifies the range of cells to be added.</li>
+      </ul>
+
+      <h3>Creating a SUM Formula</h3>
+
+      <ol class="steps">
+        <li>Select the cell where the total should appear.</li>
+        <li>Type <span class="formula">=SUM(</span>.</li>
+        <li>Select the cells containing the values you want to add.</li>
+        <li>Type the closing parenthesis <span class="formula">)</span>.</li>
+        <li>Press <kbd>Enter</kbd>.</li>
+      </ol>
+
+      <div class="example-box">
+        <div class="box-title">Example</div>
+        <p>If monthly sales are stored in B2 through B12:</p>
+        <div class="formula-block">=SUM(B2:B12)</div>
+        <p>Excel adds every numerical value from B2 through B12.</p>
+      </div>
+
+      <h3>Using the Status Bar to Check Your Work</h3>
+
+      <p>
+        When you select several numerical cells, Excel's <strong>Status Bar</strong>
+        can display quick calculations for those cells.
+      </p>
+
+      <p>Depending on your settings, the Status Bar may display:</p>
+
+      <ul>
+        <li>Average</li>
+        <li>Count</li>
+        <li>Numerical Count</li>
+        <li>Minimum</li>
+        <li>Maximum</li>
+        <li>Sum</li>
+      </ul>
+
+      <div class="note">
+        <div class="box-title">Quick Check</div>
+        The Status Bar is useful for checking a calculation without creating another
+        formula in the worksheet.
+      </div>
+
+      <h3>Let Excel Do the Work</h3>
+
+      <div class="insight">
+        <strong>A key principle for this course:</strong> When Excel provides a
+        function or formula for a calculation, use it. Avoid calculating values
+        separately with a phone or calculator and then typing the result into Excel.
+        Formulas allow the worksheet to respond when the underlying data changes.
+      </div>
+    </section>
+
+
+    <!-- ================================================= -->
+    <section id="topic12" class="module">
+      <h2>12. Basic Math Formulas</h2>
+
+      <p>
+        Excel can perform standard arithmetic directly within a cell.
+        Every formula begins with an equal sign.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Operation</th>
+            <th>Symbol</th>
+            <th>Example</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Addition</td>
+            <td>+</td>
+            <td><span class="formula">=B2+B3</span></td>
+          </tr>
+          <tr>
+            <td>Subtraction</td>
+            <td>-</td>
+            <td><span class="formula">=B2-B3</span></td>
+          </tr>
+          <tr>
+            <td>Multiplication</td>
+            <td>*</td>
+            <td><span class="formula">=B2*B3</span></td>
+          </tr>
+          <tr>
+            <td>Division</td>
+            <td>/</td>
+            <td><span class="formula">=B2/B3</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Example: First-Quarter Sales</h3>
+
+      <p>
+        If January, February, and March sales are stored in B2, B3, and B4,
+        one way to calculate Q1 sales is:
+      </p>
+
+      <div class="formula-block">=B2+B3+B4</div>
+
+      <p>You could also use:</p>
+
+      <div class="formula-block">=SUM(B2:B4)</div>
+
+      <p>
+        When adding a range of cells, SUM is often easier to read and manage.
+      </p>
+
+      <h3>The AVERAGE Function</h3>
+
+      <p>
+        The <strong>AVERAGE</strong> function calculates the arithmetic mean
+        of a group of numerical values.
+      </p>
+
+      <div class="formula-block">=AVERAGE(B2:B4)</div>
+
+      <p>
+        If B2 through B4 contain January, February, and March sales, this formula
+        calculates the average monthly sales for Q1.
+      </p>
+
+      <ol class="steps">
+        <li>Select the cell where the average should appear.</li>
+        <li>Type <span class="formula">=AVERAGE(</span>.</li>
+        <li>Select the range of values.</li>
+        <li>Close the parenthesis.</li>
+        <li>Press <kbd>Enter</kbd>.</li>
+      </ol>
+    </section>
+
+
+    <!-- ================================================= -->
+    <section id="learning-check" class="closing-section">
+      <h2 style="margin-top:0;color:var(--accent);">What You Should Be Able to Do</h2>
+
+      <div class="checklist">
+        <p><strong>After completing this lecture and reading, you should be able to:</strong></p>
+        <ul>
+          <li>Identify rows, columns, and cells.</li>
+          <li>Interpret cell references such as D5.</li>
+          <li>Use the Name Box and Formula Bar.</li>
+          <li>Use the Zoom control.</li>
+          <li>Enter and organize worksheet data.</li>
+          <li>Explain the difference between AutoFill and Flash Fill.</li>
+          <li>Use the fill handle to extend a sequence.</li>
+          <li>Apply basic number formatting.</li>
+          <li>Use AutoFit to resize columns.</li>
+          <li>Hide and unhide columns.</li>
+          <li>Move cells and columns.</li>
+          <li>Convert a range of data into an Excel Table.</li>
+          <li>Insert columns and rows.</li>
+          <li>Use the SUM function.</li>
+          <li>Use the Status Bar to check calculations.</li>
+          <li>Construct basic arithmetic formulas.</li>
+          <li>Use the AVERAGE function.</li>
+        </ul>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+
+<!-- =====================================================
+     HIGHLIGHT CURRENT SECTION IN NAVIGATION
+====================================================== -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const links = Array.from(document.querySelectorAll(".sidebar a[href^='#']"));
+  const sections = links
+    .map(link => document.querySelector(link.getAttribute("href")))
+    .filter(Boolean);
+
+  const observer = new IntersectionObserver((entries) => {
+    const visible = entries
+      .filter(entry => entry.isIntersecting)
+      .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+
+    if (!visible.length) return;
+
+    const id = visible[0].target.id;
+    links.forEach(link => {
+      link.classList.toggle("active", link.getAttribute("href") === "#" + id);
+    });
+  }, {
+    rootMargin: "-18% 0px -72% 0px",
+    threshold: 0
+  });
+
+  sections.forEach(section => observer.observe(section));
+});
+</script>
+
+</body>
+</html>
