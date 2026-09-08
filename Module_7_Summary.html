@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Advanced Functions and Decision Support Tools | Excel for Business Managers</title>
+
+<style>
+:root {
+  --bg: #f7f8fa;
+  --panel: #ffffff;
+  --ink: #222831;
+  --muted: #5c6773;
+  --line: #d7dde5;
+  --accent: #1f6f4a;
+  --accent-soft: #e9f5ef;
+  --accent-mid: #bfe3d2;
+  --note-bg: #fff7e8;
+  --note-line: #e6cf95;
+  --example-bg: #f3f8fb;
+  --example-line: #4f89a6;
+  --code-bg: #202522;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+  line-height: 1.65;
+}
+
+a { color: #0b5ea8; }
+
+/* ----------------------
+   PAGE LAYOUT
+------------------- */
+.layout {
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr);
+  gap: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 6px;
+}
+
+/* ----------------------
+   STICKY LEFT NAVIGATION
+------------------- */
+.sidebar {
+  position: sticky;
+  top: 6px;
+  align-self: start;
+  max-height: calc(100vh - 12px);
+  overflow-y: auto;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 18px 18px 16px;
+  box-shadow: 0 6px 20px rgba(34,40,49,.06);
+}
+
+.sidebar h2 {
+  margin: 0 0 6px;
+  font-size: 1.45rem;
+  color: var(--accent);
+}
+
+.sidebar p {
+  margin: 0 0 14px;
+  color: var(--muted);
+  font-size: .92rem;
+}
+
+.toc-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.toc-list li {
+  margin: 3px 0;
+}
+
+.toc-list a {
+  display: block;
+  text-decoration: none;
+  color: #334155;
+  padding: 6px 8px;
+  border-radius: 8px;
+  font-size: .94rem;
+  line-height: 1.35;
+  transition: background .15s ease, color .15s ease;
+}
+
+.toc-list a:hover,
+.toc-list a.active {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.toc-list a.active {
+  font-weight: 700;
+}
+
+/* ----------------------
+   MAIN CONTENT
+------------------- */
+.content {
+  min-width: 0;
+}
+
+.frontmatter,
+.module,
+.closing-section {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 24px 26px;
+  box-shadow: 0 6px 18px rgba(34,40,49,.05);
+  margin-bottom: 16px;
+}
+
+.frontmatter {
+  border-top: 7px solid var(--accent);
+}
+
+.frontmatter .course-label {
+  text-transform: uppercase;
+  font-size: .9rem;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  color: var(--accent);
+  margin-bottom: 5px;
+}
+
+.frontmatter h1 {
+  margin: 0;
+  font-size: 2rem;
+  line-height: 1.15;
+}
+
+.subtitle {
+  margin: 9px 0 0;
+  color: var(--muted);
+  font-size: 1.06rem;
+}
+
+h2, h3, h4 {
+  scroll-margin-top: 24px;
+}
+
+.module > h2 {
+  margin: 0 0 14px;
+  font-size: 1.55rem;
+  color: var(--accent);
+  line-height: 1.25;
+  border-bottom: 2px solid var(--accent-soft);
+  padding-bottom: 8px;
+}
+
+h3 {
+  margin: 28px 0 10px;
+  font-size: 1.28rem;
+  color: #244f3b;
+}
+
+h4 {
+  margin: 22px 0 8px;
+  font-size: 1.06rem;
+}
+
+p {
+  margin: 0 0 14px;
+}
+
+ul, ol {
+  margin-top: 8px;
+  margin-bottom: 16px;
+}
+
+li { margin-bottom: 7px; }
+
+/* ----------------------
+   INFORMATION BOXES
+------------------- */
+.insight,
+.example-box,
+.note,
+.remember-box {
+  padding: 13px 15px;
+  border-radius: 8px;
+  margin: 16px 0;
+}
+
+.insight {
+  background: var(--accent-soft);
+  border-right: 4px solid var(--accent);
+}
+
+.example-box {
+  background: var(--example-bg);
+  border-left: 4px solid var(--example-line);
+}
+
+.note {
+  background: var(--note-bg);
+  border-left: 4px solid var(--note-line);
+}
+
+.remember-box {
+  background: var(--accent-soft);
+  border-left: 4px solid var(--accent);
+}
+
+.box-title {
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+/* ----------------------
+   TABLES - EXCEL STYLE
+------------------- */
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0 16px;
+  font-size: .96rem;
+  background: #ffffff;
+  border: 1px solid #b7c9be;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+/* Header row */
+th {
+  text-align: left;
+  font-weight: 700;
+  padding: 11px 12px;
+  color: #ffffff;
+  background: #217346; /* Excel green */
+  border: 1px solid #185c37;
+}
+
+/* Regular cells */
+td {
+  padding: 11px 12px;
+  vertical-align: top;
+  border: 1px solid #d5ded9;
+  color: #222222;
+  background: #ffffff;
+}
+
+/* Alternating Excel-style banded rows */
+tbody tr:nth-child(even) td {
+  background: #ededed;
+}
+
+/* Optional hover effect */
+tbody tr:hover td {
+  background: #dceee3;
+}
+
+/* Keep formulas and inline code readable inside tables */
+td .formula,
+th .formula {
+  white-space: nowrap;
+}
+
+/* Slightly emphasize first column when useful */
+tbody td:first-child {
+  font-weight: 500;
+}
+
+/* Responsive tables */
+@media (max-width: 700px) {
+  table {
+    font-size: .9rem;
+  }
+
+  th,
+  td {
+    padding: 9px 8px;
+  }
+}
+/* ----------------------
+   FORMULAS & KEYS
+------------------- */
+.formula {
+  display: inline-block;
+  background: #f1f3f2;
+  border: 1px solid #d4d8d6;
+  border-radius: 5px;
+  padding: 3px 7px;
+  font-family: Consolas, "Courier New", monospace;
+  font-weight: 700;
+  color: #173d2b;
+}
+
+.formula-block {
+  background: var(--code-bg);
+  color: #fff;
+  font-family: Consolas, "Courier New", monospace;
+  padding: 14px 17px;
+  border-radius: 8px;
+  margin: 15px 0;
+  overflow-x: auto;
+}
+
+kbd {
+  display: inline-block;
+  padding: 2px 7px;
+  font-size: .9em;
+  background: #f1f1f1;
+  border: 1px solid #c8c8c8;
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* ----------------------
+   NUMBERED STEPS
+------------------- */
+.steps {
+  counter-reset: step;
+  list-style: none;
+  padding-left: 0;
+}
+
+.steps li {
+  position: relative;
+  margin: 15px 0;
+  padding-left: 46px;
+  min-height: 32px;
+}
+
+.steps li::before {
+  counter-increment: step;
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 30px;
+  height: 30px;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 30px;
+  font-weight: 700;
+}
+
+/* ----------------------
+   FIGURES
+------------------- */
+figure {
+  margin: 22px 0 18px;
+  text-align: center;
+}
+
+figure img {
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #fff;
+}
+
+/* Optional figure sizes */
+figure img.small {
+  max-width: 400px;
+}
+
+figure img.medium {
+  max-width: 650px;
+}
+
+figure img.large {
+  max-width: 900px;
+}
+
+figcaption {
+  margin-top: 9px;
+  font-size: .94rem;
+  color: #44515f;
+  font-style: italic;
+}
+.video-figure video.small {
+  width: 100%;
+  max-width: 400px;
+}
+
+.video-figure video.medium {
+  width: 100%;
+  max-width: 650px;
+}
+
+.video-figure video.large {
+  width: 100%;
+  max-width: 900px;
+}
+/* ----------------------
+   LEARNING CHECKLIST
+------------------- */
+.checklist {
+  background: #fafafa;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 18px 20px;
+}
+
+/* ----------------------
+   RESPONSIVE LAYOUT
+------------------- */
+@media (max-width: 1000px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    position: static;
+    max-height: none;
+  }
+
+  .toc-list {
+    columns: 2;
+    column-gap: 20px;
+  }
+
+  .toc-list li {
+    break-inside: avoid;
+  }
+}
+
+@media (max-width: 650px) {
+  .frontmatter,
+  .module,
+  .closing-section {
+    padding: 20px 18px;
+  }
+
+  .toc-list {
+    columns: 1;
+  }
+
+  .frontmatter h1 {
+    font-size: 1.65rem;
+  }
+}
+</style>
+</head>
+
+<body>
+<div class="layout">
+
+  <aside class="sidebar" aria-label="Table of contents">
+    <h2>Contents</h2>
+    <p>Select a topic to jump directly to that section.</p>
+
+    <ul class="toc-list">
+      <li><a href="#about">About This Reading</a></li>
+      <li><a href="#topic1">1. IF()</a></li>
+      <li><a href="#topic2">2. IF() with AND()</a></li>
+      <li><a href="#topic3">3. COUNTIF()</a></li>
+      <li><a href="#topic4">4. SUMIF()</a></li>
+      <li><a href="#topic5">5. VLOOKUP()</a></li>
+      <li><a href="#topic6">6. HLOOKUP()</a></li>
+      <li><a href="#topic7">7. Goal Seek</a></li>
+      <li><a href="#topic8">8. Solver</a></li>
+      <li><a href="#topic9">9. Solver with Constraints</a></li>
+      <li><a href="#learning-check">What You Should Be Able to Do</a></li>
+    </ul>
+  </aside>
+
+  <main class="content">
+
+    <section class="frontmatter" id="about">
+      <div class="course-label">Excel for Business Managers</div>
+      <h1>Advanced Functions and Decision Support Tools</h1>
+      <p class="subtitle">
+        Using logical functions, conditional calculations, lookup functions,
+        Goal Seek, and Solver to support business decisions.
+      </p>
+
+      <div class="insight" style="margin-top:20px;">
+        <strong>How to use this reading:</strong>
+        Use the navigation menu to move directly to any topic you want to review.
+        This module moves beyond basic formulas and introduces tools that evaluate
+        conditions, retrieve information, and solve decision problems.
+      </div>
+
+      <p>
+        Many business questions are conditional. A manager may need to identify
+        records that meet specified criteria, calculate totals for selected cases,
+        retrieve values from another table, determine the input required to reach a
+        target, or find the best solution subject to operational constraints.
+      </p>
+
+      <p>
+        Excel provides functions and decision-support tools for each of these tasks.
+        This module introduces IF(), AND(), COUNTIF(), SUMIF(), VLOOKUP(), HLOOKUP(),
+        Goal Seek, and Solver.
+      </p>
+    </section>
+
+
+    <section id="topic1" class="module">
+      <h2>1. IF()</h2>
+
+      <p>
+        The <strong>IF</strong> function evaluates a logical condition and returns
+        one result when the condition is true and another result when it is false.
+      </p>
+
+      <h3>IF Syntax</h3>
+
+      <div class="formula-block">=IF(logical_test, value_if_true, value_if_false)</div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Argument</th>
+            <th>Purpose</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>logical_test</td>
+            <td>The condition Excel evaluates.</td>
+          </tr>
+          <tr>
+            <td>value_if_true</td>
+            <td>The result returned when the condition is true.</td>
+          </tr>
+          <tr>
+            <td>value_if_false</td>
+            <td>The result returned when the condition is false.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Example: Classifying Donations by Year</h3>
+
+      <p>
+        Suppose a nonprofit organization has a list of donations and wants to identify
+        donations made in 2020 or later. If the donation year is in cell C3, the formula
+        can test whether the year is greater than 2019.
+      </p>
+
+      <div class="formula-block">=IF(C3&gt;2019,"Yes","No")</div>
+
+      <p>
+        If C3 contains 2023, Excel returns <strong>Yes</strong>. If C3 contains 2010,
+        Excel returns <strong>No</strong>.
+      </p>
+
+      <div class="remember-box">
+        <div class="box-title">Text Outputs Require Quotation Marks</div>
+        When an IF function returns text such as Yes or No, place the text inside
+        quotation marks.
+      </div>
+
+      <h3>Copying the Formula Down</h3>
+
+      <p>
+        After the formula is entered for the first record, use the fill handle to copy
+        it down the column. Excel adjusts the row reference for each record.
+      </p>
+    </section>
+
+
+    <section id="topic2" class="module">
+      <h2>2. IF() with AND()</h2>
+
+      <p>
+        Sometimes one condition is not enough. The <strong>AND</strong> function
+        evaluates multiple logical tests and returns TRUE only when all of them are true.
+      </p>
+
+      <h3>AND Syntax</h3>
+
+      <div class="formula-block">=AND(logical1, logical2, ...)</div>
+
+      <p>
+        AND can be nested inside IF when the desired result depends on more than one
+        condition.
+      </p>
+
+      <h3>Example: Recent and High-Value Donations</h3>
+
+      <p>
+        Suppose the worksheet already contains a Yes/No field identifying donations
+        made after 2019, and the donation amount is stored in B3. A record should be
+        labeled only when both conditions are met:
+      </p>
+
+      <ul>
+        <li>the donation is identified as post-2019, and</li>
+        <li>the donation is greater than $1,000.</li>
+      </ul>
+
+      <div class="formula-block">=IF(AND(D3="Yes",B3&gt;1000),"Post-COVID High","")</div>
+
+      <p>
+        If both conditions are true, Excel returns the text
+        <strong>Post-COVID High</strong>. Otherwise, the formula returns a blank.
+      </p>
+
+      <div class="remember-box">
+        <div class="box-title">Returning a Blank Cell</div>
+        Two quotation marks with nothing between them,
+        <span class="formula">""</span>, tell Excel to display a blank result.
+      </div>
+
+      <div class="insight">
+        <strong>Nested logic:</strong>
+        Nesting AND inside IF allows a decision rule to require multiple conditions
+        before returning a result.
+      </div>
+    </section>
+
+
+    <section id="topic3" class="module">
+      <h2>3. COUNTIF()</h2>
+
+      <p>
+        <strong>COUNTIF</strong> counts the number of cells in a range that meet
+        one specified criterion.
+      </p>
+
+      <h3>COUNTIF Syntax</h3>
+
+      <div class="formula-block">=COUNTIF(range, criteria)</div>
+
+      <h3>Example: Count Donations Meeting a Condition</h3>
+
+      <p>
+        If column D contains Yes or No values identifying donations made after 2019,
+        COUNTIF can count the number of Yes values:
+      </p>
+
+      <div class="formula-block">=COUNTIF(D3:D20,"Yes")</div>
+
+      <p>
+        Excel returns the number of records in the selected range that contain
+        <strong>Yes</strong>.
+      </p>
+
+      <div class="example-box">
+        <div class="box-title">Business Question</div>
+        COUNTIF can answer questions such as, "How many donations occurred after
+        the selected year?" without requiring you to count records manually.
+      </div>
+    </section>
+
+
+    <section id="topic4" class="module">
+      <h2>4. SUMIF()</h2>
+
+      <p>
+        <strong>SUMIF</strong> adds values only when the corresponding records
+        meet a specified criterion.
+      </p>
+
+      <h3>SUMIF Syntax</h3>
+
+      <div class="formula-block">=SUMIF(range, criteria, sum_range)</div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Argument</th>
+            <th>Purpose</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>range</td>
+            <td>The cells Excel evaluates against the criterion.</td>
+          </tr>
+          <tr>
+            <td>criteria</td>
+            <td>The condition that identifies which records qualify.</td>
+          </tr>
+          <tr>
+            <td>sum_range</td>
+            <td>The numerical cells Excel adds for qualifying records.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Example: Total Selected Donations</h3>
+
+      <p>
+        If column D contains Yes/No classifications and column B contains donation
+        amounts:
+      </p>
+
+      <div class="formula-block">=SUMIF(D3:D20,"Yes",B3:B20)</div>
+
+      <p>
+        Excel adds only the donation amounts associated with records marked Yes.
+      </p>
+
+      <div class="insight">
+        <strong>COUNTIF vs. SUMIF:</strong>
+        COUNTIF tells you how many records meet a condition. SUMIF tells you the
+        total value associated with those records.
+      </div>
+    </section>
+
+
+    <section id="topic5" class="module">
+      <h2>5. VLOOKUP()</h2>
+
+      <p>
+        <strong>VLOOKUP</strong> searches vertically down the first column of a table
+        and returns a value from another column in the matching row.
+      </p>
+
+      <h3>VLOOKUP Syntax</h3>
+
+      <div class="formula-block">=VLOOKUP(lookup_value, table_array, col_index_num, range_lookup)</div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Argument</th>
+            <th>Purpose</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>lookup_value</td>
+            <td>The item you want Excel to find.</td>
+          </tr>
+          <tr>
+            <td>table_array</td>
+            <td>The table containing the lookup field and return field.</td>
+          </tr>
+          <tr>
+            <td>col_index_num</td>
+            <td>The column number in the table from which the result should be returned.</td>
+          </tr>
+          <tr>
+            <td>range_lookup</td>
+            <td>FALSE requests an exact match; TRUE requests an approximate match.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Example: Retrieve a Donation Amount</h3>
+
+      <p>
+        Suppose the first column of the lookup table contains donor names and the
+        second column contains donation amounts. If the name to find is in F3:
+      </p>
+
+      <div class="formula-block">=VLOOKUP(F3,A3:B20,2,FALSE)</div>
+
+      <p>
+        Excel searches the first column of A3:B20 for the name in F3 and returns
+        the matching value from column 2.
+      </p>
+
+      <div class="remember-box">
+        <div class="box-title">Use Exact Match for This Type of Lookup</div>
+        Setting the fourth argument to <span class="formula">FALSE</span> tells Excel
+        to return only an exact match.
+      </div>
+
+      <h3>Column Index Number</h3>
+
+      <p>
+        The column index is counted from the left edge of the selected table array.
+        The first column is 1, the second is 2, and so forth.
+      </p>
+    </section>
+
+
+    <section id="topic6" class="module">
+      <h2>6. HLOOKUP()</h2>
+
+      <p>
+        <strong>HLOOKUP</strong> performs the same basic task as VLOOKUP, but searches
+        horizontally across the first row of a table rather than vertically down the
+        first column.
+      </p>
+
+      <h3>HLOOKUP Syntax</h3>
+
+      <div class="formula-block">=HLOOKUP(lookup_value, table_array, row_index_num, range_lookup)</div>
+
+      <h3>Creating Horizontal Data with Transpose</h3>
+
+      <p>
+        A vertically organized table can be converted to a horizontal layout with
+        <strong>Paste Special &gt; Transpose</strong>.
+      </p>
+
+      <ol class="steps">
+        <li>Select and copy the vertical table.</li>
+        <li>Select the destination cell.</li>
+        <li>Open <strong>Paste Special</strong>.</li>
+        <li>Select <strong>Transpose</strong>.</li>
+      </ol>
+
+      <h3>Example: Horizontal Lookup</h3>
+
+      <p>
+        After the data is transposed, HLOOKUP can search the first row for a donor
+        name and return the corresponding value from the second row:
+      </p>
+
+      <div class="formula-block">=HLOOKUP(F3,A25:T26,2,FALSE)</div>
+
+      <div class="insight">
+        <strong>V means vertical; H means horizontal.</strong>
+        Choose the function based on the orientation of the lookup table.
+      </div>
+    </section>
+
+
+    <section id="topic7" class="module">
+      <h2>7. Goal Seek</h2>
+
+      <p>
+        <strong>Goal Seek</strong> is a What-If Analysis tool that works backward
+        from a desired result. Instead of calculating an output from an input, Goal
+        Seek determines the input required to produce a specified output.
+      </p>
+
+      <h3>Example: Break-Even Analysis</h3>
+
+      <p>
+        Consider a simple product with:
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Input</th>
+            <th>Example Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Unit Price</td>
+            <td>$5.00</td>
+          </tr>
+          <tr>
+            <td>Unit Cost</td>
+            <td>$2.50</td>
+          </tr>
+          <tr>
+            <td>Fixed Cost</td>
+            <td>$10,000</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>
+        Total profit can be calculated as:
+      </p>
+
+      <div class="formula-block">=(Unit Price - Unit Cost) * Units Sold - Fixed Cost</div>
+
+      <p>
+        Break-even occurs when total profit equals zero.
+      </p>
+
+      <h3>Use Goal Seek</h3>
+
+      <ol class="steps">
+        <li>Build the formula connecting units sold to total profit.</li>
+        <li>Go to <strong>Data &gt; What-If Analysis &gt; Goal Seek</strong>.</li>
+        <li>Set the <strong>Set cell</strong> to the Total Profit cell.</li>
+        <li>Set <strong>To value</strong> to 0.</li>
+        <li>Set <strong>By changing cell</strong> to Units Sold.</li>
+        <li>Select <strong>OK</strong>.</li>
+      </ol>
+
+      <p>
+        With the example values above, Goal Seek determines that 4,000 units must
+        be sold to break even.
+      </p>
+
+      <div class="remember-box">
+        <div class="box-title">Goal Seek Requires a Formula</div>
+        The target cell must already contain a formula linked to the input cell that
+        Goal Seek is allowed to change.
+      </div>
+    </section>
+
+
+    <section id="topic8" class="module">
+      <h2>8. Solver</h2>
+
+      <p>
+        <strong>Solver</strong> is another decision-support tool. Like Goal Seek,
+        Solver can change input values to reach a desired result, but Solver can
+        handle more complex objectives and multiple decision variables.
+      </p>
+
+      <div class="note">
+        <div class="box-title">Solver May Need to Be Activated</div>
+        Solver is an Excel add-in. If it does not appear on the Data tab, it may need
+        to be enabled through Excel's Add-ins options.
+      </div>
+
+      <h3>Solver Components</h3>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Solver Component</th>
+            <th>Meaning</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Set Objective</td>
+            <td>The result cell Solver will optimize or target.</td>
+          </tr>
+          <tr>
+            <td>To</td>
+            <td>Maximize, minimize, or reach a specified value.</td>
+          </tr>
+          <tr>
+            <td>By Changing Variable Cells</td>
+            <td>The input cells Solver is allowed to adjust.</td>
+          </tr>
+          <tr>
+            <td>Constraints</td>
+            <td>Rules that limit the possible solutions.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Break-Even with Solver</h3>
+
+      <p>
+        The same break-even problem used with Goal Seek can be solved with Solver by:
+      </p>
+
+      <ul>
+        <li>setting Total Profit as the objective,</li>
+        <li>setting the objective to a value of 0, and</li>
+        <li>allowing Solver to change Units Sold.</li>
+      </ul>
+
+      <p>
+        Solver returns the same break-even solution of 4,000 units in the example.
+      </p>
+    </section>
+
+
+    <section id="topic9" class="module">
+      <h2>9. Solver with Constraints</h2>
+
+      <p>
+        Solver becomes especially useful when a decision problem includes several
+        decision variables and operational constraints.
+      </p>
+
+      <h3>Example: Product-Mix Optimization</h3>
+
+      <p>
+        Suppose a bakery produces several types of donuts. For each product, the
+        worksheet includes:
+      </p>
+
+      <ul>
+        <li>Donut Type</li>
+        <li>Quantity to Bake</li>
+        <li>Total Demand</li>
+        <li>Profit per Donut</li>
+        <li>Total Profit</li>
+      </ul>
+
+      <p>
+        Total profit for each donut type is calculated as:
+      </p>
+
+      <div class="formula-block">=Quantity to Bake * Profit per Donut</div>
+
+      <p>
+        The worksheet also calculates total units baked and total profit across
+        all products.
+      </p>
+
+      <h3>Objective</h3>
+
+      <p>
+        The goal is to <strong>maximize total profit</strong> by changing the
+        quantities produced for each donut type.
+      </p>
+
+      <h3>Constraints</h3>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Constraint</th>
+            <th>Business Meaning</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Quantities must be integers</td>
+            <td>Fractional donuts cannot be produced.</td>
+          </tr>
+          <tr>
+            <td>Total units baked = 15,000</td>
+            <td>Production capacity is limited to 15,000 donuts.</td>
+          </tr>
+          <tr>
+            <td>Quantity to bake ≤ demand</td>
+            <td>Production should not exceed demand for each product.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Configure Solver</h3>
+
+      <ol class="steps">
+        <li>Set the Total Profit cell as the objective.</li>
+        <li>Select <strong>Max</strong> to maximize the objective.</li>
+        <li>Select all Quantity to Bake cells as the changing variable cells.</li>
+        <li>Add a constraint requiring quantities to be integers.</li>
+        <li>Add the production-capacity constraint.</li>
+        <li>Add the demand constraint for each product.</li>
+        <li>Select <strong>Solve</strong>.</li>
+        <li>Choose to keep the Solver solution.</li>
+      </ol>
+
+      <div class="example-box">
+        <div class="box-title">Example Solution</div>
+        Under the constraints used in the worksheet, Solver allocates production
+        across the most profitable products while respecting capacity and demand,
+        producing a total of 15,000 units and a profit just under $22,000.
+      </div>
+
+      <div class="insight">
+        <strong>Decision-support value:</strong>
+        Solver is useful when a manager must choose the best combination of actions
+        while working within resource, capacity, demand, budget, or other constraints.
+      </div>
+
+      <div class="note">
+        <div class="box-title">A Mathematical Optimum Is Not Always the Entire Decision</div>
+        An optimization model includes only the factors represented in the worksheet.
+        Real decisions may also involve considerations such as customer variety,
+        strategic priorities, quality, or operational risk.
+      </div>
+    </section>
+
+
+    <section id="learning-check" class="closing-section">
+      <h2 style="margin-top:0;color:var(--accent);">What You Should Be Able to Do</h2>
+
+      <div class="checklist">
+        <p><strong>After completing this module, you should be able to:</strong></p>
+        <ul>
+          <li>Write an IF() function using a logical test and true/false outputs.</li>
+          <li>Use quotation marks for text returned by a formula.</li>
+          <li>Nest AND() inside IF() to evaluate multiple conditions.</li>
+          <li>Return a blank result with empty quotation marks.</li>
+          <li>Use COUNTIF() to count records that meet a criterion.</li>
+          <li>Use SUMIF() to total values associated with qualifying records.</li>
+          <li>Use VLOOKUP() to retrieve information from a vertically organized table.</li>
+          <li>Use FALSE to request an exact-match lookup.</li>
+          <li>Transpose a table with Paste Special.</li>
+          <li>Use HLOOKUP() with a horizontally organized table.</li>
+          <li>Explain the purpose of Goal Seek.</li>
+          <li>Use Goal Seek to solve a break-even problem.</li>
+          <li>Explain the difference between Goal Seek and Solver.</li>
+          <li>Set an objective and changing variable cells in Solver.</li>
+          <li>Use Solver to maximize or target an objective.</li>
+          <li>Add integer, capacity, and demand constraints.</li>
+          <li>Use Solver for a constrained product-mix decision.</li>
+        </ul>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const links = Array.from(document.querySelectorAll(".sidebar a[href^='#']"));
+  const sections = links
+    .map(link => document.querySelector(link.getAttribute("href")))
+    .filter(Boolean);
+
+  const observer = new IntersectionObserver((entries) => {
+    const visible = entries
+      .filter(entry => entry.isIntersecting)
+      .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+
+    if (!visible.length) return;
+
+    const id = visible[0].target.id;
+    links.forEach(link => {
+      link.classList.toggle("active", link.getAttribute("href") === "#" + id);
+    });
+  }, {
+    rootMargin: "-18% 0px -72% 0px",
+    threshold: 0
+  });
+
+  sections.forEach(section => observer.observe(section));
+});
+</script>
+
+</body>
+</html>
